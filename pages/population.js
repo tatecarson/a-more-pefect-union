@@ -2,6 +2,7 @@
 function Population(m, num) {
   this.mutationRate = m; // Mutation rate
   this.population = []; // array to hold the current population
+  this.someOtherPopulation = {};
   this.matingPool = [];
   this.play = [];
   this.generations = 0; // Number of generations
@@ -19,6 +20,7 @@ function Population(m, num) {
     let maxFitness = this.getMaxFitness();
     console.log("max fit: ", maxFitness);
 
+    //DO THIS FOR ME
     // Calculate fitness for each member of the population (scaled to value between 0 and 1)
     // Based on fitness, each member will get added to the mating pool a certain number of times
     // A higher fitness = more entries to mating pool = more likely to be picked as a parent
@@ -31,12 +33,19 @@ function Population(m, num) {
         0,
         1
       );
-      let n = _.floor(fitnessNormal * 100); // Arbitrary multiplier
+
+      //create a new multiplier
+      console.log("other fitness: ", this.someOtherPopulation.fitness);
+
+      let n = this.someOtherPopulation.fitness * 10;
+      // let n = _.floor(fitnessNormal * 100); // Arbitrary multiplier
 
       for (let j = 0; j < n; j++) {
-        this.matingPool.push(this.population[i]);
+        // this.matingPool.push(this.population[i]);
+        this.matingPool.push(this.someOtherPopulation);
       }
     }
+    console.log("mating pool", this.matingPool);
   };
 
   // Making the next generation
@@ -49,10 +58,15 @@ function Population(m, num) {
       // Pick two parents
       let mom = this.matingPool[m];
       let dad = this.matingPool[d];
+
       // Get their genes
-      let momgenes = mom.getDNA();
-      let dadgenes = dad.getDNA();
+      // let momgenes = mom.getDNA();
+      // let dadgenes = dad.getDNA();
+      let momgenes = mom.genes;
+      let dadgenes = dad.genes;
+
       // Mate their genes
+      //TODO: use the crossover and mutation function from DNA here
       let child = momgenes.crossover(dadgenes);
       // Mutate their genes
       child.mutate(this.mutationRate);

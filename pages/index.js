@@ -8,7 +8,6 @@ const popmax = 1;
 
 // Create a population with a target phrase, mutation rate, and population max
 const population = new Population(mutationRate, popmax);
-console.log("");
 
 //create gui
 $(function() {
@@ -53,7 +52,7 @@ function nextGen() {
     population.population[0].getFitness(),
     client.id
   ]);
-  client.send("/melody", population.population[0].getDNA().genes);
+  client.send("/genes", population.population[0].getDNA().genes);
 
   population.selection();
   population.reproduction();
@@ -77,10 +76,13 @@ client.on("connected", function() {
 //TODO: somehow send fitness score from here into the population object
 client.on("message", function(addr, args) {
   if (addr === "/fitnessScore") {
-    console.log(args);
+    // console.log(args);
+    population.someOtherPopulation.fitness = args[0];
+    population.someOtherPopulation.clientID = args[1];
   }
-  if (addr === "/melody") {
-    console.log(args);
+  if (addr === "/genes") {
+    // console.log(args);
+    population.someOtherPopulation.genes = args;
   }
 });
 
