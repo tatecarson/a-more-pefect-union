@@ -54,7 +54,6 @@ function Melody(dna_) {
 
     interval = setInterval(() => {
       self.fitness += 0.25;
-      // client.send("/bleep", [self.fitness]);
     }, 1000);
 
     console.log(self.melody);

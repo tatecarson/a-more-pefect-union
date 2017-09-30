@@ -60,11 +60,6 @@ function Population(m, num) {
       // this.population[i] = new Melody(child);
       this.population[i].newDNA(child);
     }
-    this.generations++;
-  };
-
-  this.getGenerations = function() {
-    return this.generations;
   };
 
   // Find highest fintess for the population
