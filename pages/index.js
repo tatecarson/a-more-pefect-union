@@ -8,7 +8,8 @@ const popmax = 1;
 
 // Create a population with a target phrase, mutation rate, and population max
 const population = new Population(mutationRate, popmax);
-
+const testObject = {};
+const testArray = [];
 //create gui
 $(function() {
   StartAudioContext(Tone.context, document.documentElement);
@@ -50,12 +51,6 @@ $(function() {
 });
 
 function nextGen() {
-  // client.send("/fitnessScore", [
-  //   population.population[0].getFitness(),
-  //   client.id
-  // ]);
-  // client.send("/genes", population.population[0].getDNA().genes);
-
   population.selection();
   population.reproduction();
 }
@@ -69,10 +64,6 @@ client.start(function(err) {
 
 client.on("connected", function() {
   console.log("connected");
-  $("#client-banner")
-    .removeClass("disconnected")
-    .addClass("connected")
-    .html("Connected");
 });
 
 client.on("message", function(addr, args) {
@@ -80,12 +71,14 @@ client.on("message", function(addr, args) {
     //FIXME: figure out some way to store fitness and genes that relate to
     // a unique id, then read through those in population.js like you were before
     // population[i]
-    population.someOtherPopulation.fitness = args[0];
-    population.someOtherPopulation.clientID = args[1];
-    console.log(population.someOtherPopulation.clientID);
+    // population.someOtherPopulation.fitness = args[0];
+    // population.someOtherPopulation.clientID = args[1];
+
+    //OH WOW DOES THIS WORK?? AM I JUST TIRED??
+    testArray.push({ fitness: args[0], clientID: args[1] });
+    // console.log(population.someOtherPopulation.clientID);
   }
   if (addr === "/genes") {
-    // console.log(args);
     population.someOtherPopulation.genes = args;
   }
 });
