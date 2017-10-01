@@ -24,9 +24,15 @@ $(function() {
     e.on("change", v => {
       if (v) {
         population.population[i].play();
+        client.send("/genes", population.population[0].getDNA().genes);
       } else {
         population.population[i].loop.stop();
         population.population[i].clear();
+
+        client.send("/fitnessScore", [
+          population.population[0].getFitness(),
+          client.id
+        ]);
       }
     });
   });
@@ -39,20 +45,16 @@ $(function() {
   });
 
   evolve.on("change", v => {
-    if (v) {
-      nextGen();
-    }
+    if (v) nextGen();
   });
 });
 
 function nextGen() {
-  //TODO: make it into json object?
-
-  client.send("/fitnessScore", [
-    population.population[0].getFitness(),
-    client.id
-  ]);
-  client.send("/genes", population.population[0].getDNA().genes);
+  // client.send("/fitnessScore", [
+  //   population.population[0].getFitness(),
+  //   client.id
+  // ]);
+  // client.send("/genes", population.population[0].getDNA().genes);
 
   population.selection();
   population.reproduction();
@@ -73,12 +75,14 @@ client.on("connected", function() {
     .html("Connected");
 });
 
-//TODO: somehow send fitness score from here into the population object
 client.on("message", function(addr, args) {
   if (addr === "/fitnessScore") {
-    // console.log(args);
+    //FIXME: figure out some way to store fitness and genes that relate to
+    // a unique id, then read through those in population.js like you were before
+    // population[i]
     population.someOtherPopulation.fitness = args[0];
     population.someOtherPopulation.clientID = args[1];
+    console.log(population.someOtherPopulation.clientID);
   }
   if (addr === "/genes") {
     // console.log(args);

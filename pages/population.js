@@ -4,7 +4,6 @@ function Population(m, num) {
   this.population = []; // array to hold the current population
   this.someOtherPopulation = {};
   this.matingPool = [];
-  this.play = [];
   this.generations = 0; // Number of generations
 
   for (let i = 0; i < num; i++) {
@@ -18,9 +17,7 @@ function Population(m, num) {
 
     // Calculate total fitness of whole population
     let maxFitness = this.getMaxFitness();
-    console.log("max fit: ", maxFitness);
 
-    //DO THIS FOR ME
     // Calculate fitness for each member of the population (scaled to value between 0 and 1)
     // Based on fitness, each member will get added to the mating pool a certain number of times
     // A higher fitness = more entries to mating pool = more likely to be picked as a parent
@@ -42,9 +39,12 @@ function Population(m, num) {
 
       for (let j = 0; j < n; j++) {
         // this.matingPool.push(this.population[i]);
+
+        //FIXME: need to add from all clients here
         this.matingPool.push(this.someOtherPopulation);
       }
     }
+    //FIXME: matingpool isn't getting values from multiple clients at the same time
     console.log("mating pool", this.matingPool);
   };
 
@@ -65,13 +65,14 @@ function Population(m, num) {
       let momgenes = mom.genes;
       let dadgenes = dad.genes;
 
+      // console.log("mom: ", momgenes, "dad: ", dadgenes);
+
       // Mate their genes
-      //TODO: use the crossover and mutation function from DNA here
+      //TODO: add the crossover and mutation function from DNA here
       let child = momgenes.crossover(dadgenes);
       // Mutate their genes
       child.mutate(this.mutationRate);
       // Fill the new population with the new child
-      // this.population[i] = new Melody(child);
       this.population[i].newDNA(child);
     }
   };
@@ -88,3 +89,25 @@ function Population(m, num) {
     return record;
   };
 }
+
+// Crossover
+// Creates new DNA sequence from two
+// TODO: edit this so it works within this function with new data
+this.crossover = function(partner) {
+  const child = new Array(this.genes.length);
+  const crossover = _.floor(_.random(this.genes.length));
+  for (let i = 0; i < this.genes.length; i++) {
+    if (i > crossover) child[i] = this.genes[i];
+    else child[i] = partner.genes[i];
+  }
+  return new DNA(child);
+};
+
+// Based on a mutation probability, picks a new _.random character in array spots
+this.mutate = function(m) {
+  for (var i = 0; i < this.genes.length; i++) {
+    if (_.random(1, true) < m) {
+      this.genes[i] = _.random(0, 1);
+    }
+  }
+};
