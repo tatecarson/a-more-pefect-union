@@ -2,7 +2,7 @@
 function Population(m, num) {
   this.mutationRate = m; // Mutation rate
   this.population = []; // array to hold the current population
-  this.someOtherPopulation = {};
+  this.someOtherPopulation = [];
   this.matingPool = [];
   this.generations = 0; // Number of generations
 
