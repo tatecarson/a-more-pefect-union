@@ -22,8 +22,6 @@ function Population(m, num) {
     // Based on fitness, each member will get added to the mating pool a certain number of times
     // A higher fitness = more entries to mating pool = more likely to be picked as a parent
     // A lower fitness = fewer entries to mating pool = less likely to be picked as a parent
-    console.log(this.someOtherPopulation);
-
     for (let i = 0; i < this.someOtherPopulation.length; i++) {
       let fitnessNormal = linlin(
         this.someOtherPopulation[i].fitness,
@@ -40,13 +38,12 @@ function Population(m, num) {
         this.matingPool.push(this.someOtherPopulation[i]);
       }
     }
-    console.log("mating pool: ", this.matingPool);
   };
 
   // Making the next generation
   this.reproduction = function() {
     // Refill the population with children from the mating pool
-    for (var i = 0; i < this.population.length; i++) {
+    for (var i = 0; i < this.someOtherPopulation.length; i++) {
       // Sping the wheel of fortune to pick two parents
       let m = _.floor(_.random(this.matingPool.length));
       let d = _.floor(_.random(this.matingPool.length));
@@ -55,12 +52,8 @@ function Population(m, num) {
       let dad = this.matingPool[d];
 
       // Get their genes
-      // let momgenes = mom.getDNA();
-      // let dadgenes = dad.getDNA();
       let momgenes = mom.genes;
       let dadgenes = dad.genes;
-
-      // console.log("mom: ", momgenes, "dad: ", dadgenes);
 
       // Mate their genes
       //TODO: add the crossover and mutation function from DNA here
