@@ -20,6 +20,7 @@ $(function() {
     });
   }
 
+  //TODO: instead of On/Off do start sound and next sound so that a user can't add to the mating pool twice
   toggles.forEach((e, i) => {
     e.on("change", v => {
       if (v) {
@@ -27,11 +28,6 @@ $(function() {
       } else {
         population.population[i].loop.stop();
         population.population[i].clear();
-
-        //FIXME: objects duplicate here, not sure why
-        // things tried:
-        // 1. doesn't matter which nexus element used
-        // 2. with a different address it's only sent once, explore that
 
         //Add fitness and ID to an array so they can be concated with the genes array
         const fitID = [population.population[0].getFitness(), client.id];
@@ -41,9 +37,6 @@ $(function() {
           "/fitness",
           fitID.concat(population.population[0].getDNA().genes)
         );
-
-        // this sends once
-        client.send("/test", [1]);
       }
     });
   });
@@ -57,13 +50,6 @@ $(function() {
 
   evolve.on("change", v => {
     if (v) nextGen();
-  });
-
-  const test = Nexus.Add.TextButton("#synth");
-  test.on("change", v => {
-    if (v) {
-      client.send("/test", [1]);
-    }
   });
 });
 
@@ -85,17 +71,11 @@ client.on("connected", function() {
 
 client.on("message", function(addr, args) {
   if (addr === "/fitness") {
-    console.log("im getting data");
-
     population.someOtherPopulation.push({
       fitness: args[0],
       clientID: args[1],
       genes: args.slice(2, args.length) //turn back into an array
     });
-  }
-
-  if (addr === "/test") {
-    console.log("testing");
   }
 });
 

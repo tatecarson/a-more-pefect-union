@@ -22,9 +22,11 @@ function Population(m, num) {
     // Based on fitness, each member will get added to the mating pool a certain number of times
     // A higher fitness = more entries to mating pool = more likely to be picked as a parent
     // A lower fitness = fewer entries to mating pool = less likely to be picked as a parent
-    for (let i = 0; i < this.population.length; i++) {
+    console.log(this.someOtherPopulation);
+
+    for (let i = 0; i < this.someOtherPopulation.length; i++) {
       let fitnessNormal = linlin(
-        this.population[i].getFitness(),
+        this.someOtherPopulation[i].fitness,
         0,
         maxFitness,
         0,
@@ -32,20 +34,13 @@ function Population(m, num) {
       );
 
       //create a new multiplier
-      console.log("other fitness: ", this.someOtherPopulation.fitness);
-
-      let n = this.someOtherPopulation.fitness * 10;
-      // let n = _.floor(fitnessNormal * 100); // Arbitrary multiplier
+      let n = _.floor(fitnessNormal * 100); // Arbitrary multiplier
 
       for (let j = 0; j < n; j++) {
-        // this.matingPool.push(this.population[i]);
-
-        //FIXME: need to add from all clients here
-        this.matingPool.push(this.someOtherPopulation);
+        this.matingPool.push(this.someOtherPopulation[i]);
       }
     }
-    //FIXME: matingpool isn't getting values from multiple clients at the same time
-    console.log("mating pool", this.matingPool);
+    console.log("mating pool: ", this.matingPool);
   };
 
   // Making the next generation
@@ -80,9 +75,9 @@ function Population(m, num) {
   // Find highest fintess for the population
   this.getMaxFitness = function() {
     let record = 0;
-    for (let i = 0; i < this.population.length; i++) {
-      if (this.population[i].getFitness() > record) {
-        record = this.population[i].getFitness();
+    for (let i = 0; i < this.someOtherPopulation.length; i++) {
+      if (this.someOtherPopulation[i].fitness > record) {
+        record = this.someOtherPopulation[i].fitness;
       }
     }
 
