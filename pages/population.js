@@ -57,7 +57,9 @@ function Population(m, num) {
 
       // Mate their genes
       //TODO: add the crossover and mutation function from DNA here
-      let child = momgenes.crossover(dadgenes);
+      let child = crossover(momgenes, dadgenes);
+      console.log("child: ", child);
+
       // Mutate their genes
       child.mutate(this.mutationRate);
       // Fill the new population with the new child
@@ -76,26 +78,26 @@ function Population(m, num) {
 
     return record;
   };
-}
 
-// Crossover
-// Creates new DNA sequence from two
-// TODO: edit this so it works within this function with new data
-this.crossover = function(partner) {
-  const child = new Array(this.genes.length);
-  const crossover = _.floor(_.random(this.genes.length));
-  for (let i = 0; i < this.genes.length; i++) {
-    if (i > crossover) child[i] = this.genes[i];
-    else child[i] = partner.genes[i];
-  }
-  return new DNA(child);
-};
-
-// Based on a mutation probability, picks a new _.random character in array spots
-this.mutate = function(m) {
-  for (var i = 0; i < this.genes.length; i++) {
-    if (_.random(1, true) < m) {
-      this.genes[i] = _.random(0, 1);
+  // Crossover
+  // Creates new DNA sequence from two
+  // TODO: edit this so it works within this function with new data
+  const crossover = function(mom, dad) {
+    const child = new Array(mom.length);
+    const cross = _.floor(_.random(mom.length));
+    for (let i = 0; i < mom.length; i++) {
+      if (i > cross) child[i] = mom[i];
+      else child[i] = dad[i];
     }
-  }
-};
+    return new DNA(child);
+  };
+
+  // Based on a mutation probability, picks a new _.random character in array spots
+  this.mutate = function(m) {
+    for (var i = 0; i < this.genes.length; i++) {
+      if (_.random(1, true) < m) {
+        this.genes[i] = _.random(0, 1);
+      }
+    }
+  };
+}
