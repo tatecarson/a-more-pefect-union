@@ -40,6 +40,7 @@ function Melody(dna_) {
 
   this.newDNA = function(newDNA) {
     self.dna = newDNA;
+
     var genes = self.dna.genes;
 
     self.melody = genes.map(e => {
@@ -49,7 +50,7 @@ function Melody(dna_) {
 
   this.play = function() {
     //increase fitness by time spent with melody
-    self.fitness = 1;
+    self.fitness = 0.25;
     const rNum = _.random(0, rhythmPatterns.length);
 
     interval = setInterval(() => {

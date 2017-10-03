@@ -1,6 +1,6 @@
 // Create the population
-function Population(m, num) {
-  this.mutationRate = m; // Mutation rate
+function Population(mutationRate, num) {
+  this.mutationRate = mutationRate; // Mutation rate
   this.population = []; // array to hold the current population
   this.someOtherPopulation = [];
   this.matingPool = [];
@@ -56,14 +56,15 @@ function Population(m, num) {
       let dadgenes = dad.genes;
 
       // Mate their genes
-      //TODO: add the crossover and mutation function from DNA here
       let child = crossover(momgenes, dadgenes);
-      console.log("child: ", child);
 
       // Mutate their genes
-      child.mutate(this.mutationRate);
+      //FIXME: mutation not working, it's in this function
+      // it's just supposed to insert a random value into some of the index's
+      let mutateChild = mutate(child);
+
       // Fill the new population with the new child
-      this.population[i].newDNA(child);
+      population.population[0].newDNA(mutateChild);
     }
   };
 
@@ -93,11 +94,12 @@ function Population(m, num) {
   };
 
   // Based on a mutation probability, picks a new _.random character in array spots
-  this.mutate = function(m) {
-    for (var i = 0; i < this.genes.length; i++) {
-      if (_.random(1, true) < m) {
-        this.genes[i] = _.random(0, 1);
+  const mutate = function(m) {
+    for (var i = 0; i < m.genes.length; i++) {
+      if (_.random(1, true) < mutationRate) {
+        m.genes[i] = _.random(1, true);
       }
     }
+    return m.genes;
   };
 }
