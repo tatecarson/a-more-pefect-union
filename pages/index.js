@@ -16,14 +16,17 @@ $(function() {
     });
   }
 
-  //TODO: instead of On/Off do start sound and next sound so that a user can't add to the mating pool twice
+  //on turns sound on, off turns off and generates new melody
   toggles.forEach((e, i) => {
     e.on("change", v => {
       if (v) {
         population.population[i].play();
       } else {
+        //stop loop
         population.population[i].loop.stop();
-        population.population[i].clear();
+
+        //create next generation
+        nextGen();
 
         //Add fitness and ID to an array so they can be concated with the genes array
         const fitID = [population.population[0].getFitness(), client.id];
@@ -32,20 +35,23 @@ $(function() {
           "/fitness",
           fitID.concat(population.population[0].getDNA().genes)
         );
+
+        //clear fitness
+        population.population[i].clear();
       }
     });
   });
 
-  const evolve = new Nexus.Add.TextButton("#evolve", {
-    size: [320, 50],
-    state: false,
-    text: "Evolve new generation",
-    alternate: false
-  });
+  // const evolve = new Nexus.Add.TextButton("#evolve", {
+  //   size: [320, 50],
+  //   state: false,
+  //   text: "Evolve new generation",
+  //   alternate: false
+  // });
 
-  evolve.on("change", v => {
-    if (v) nextGen();
-  });
+  // evolve.on("change", v => {
+  //   if (v) nextGen();
+  // });
 });
 
 function nextGen() {
@@ -102,3 +108,15 @@ Tone.Transport.bpm.value = _.random(100, 200);
 // at t.MembraneSynth.t.Instrument.triggerAttackRelease (Tone.min.js:13)
 // at t.Loop.callback (melody.js:63)
 // at t.Loop._tick (Tone.min.js:12)
+
+//FIXME: Uncaught TypeError: Cannot read property '4' of undefined
+// at t.Loop.callback (melody.js:66)
+// at t.Loop._tick (Tone.min.js:12)
+// at t.Event._tick (Tone.min.js:12)
+// at t.TransportRepeatEvent.t.TransportEvent.invoke (Tone.min.js:9)
+// at t.TransportRepeatEvent.invoke (Tone.min.js:9)
+// at t.TransportEvent.invoke (Tone.min.js:9)
+// at t.Timeline.<anonymous> (Tone.min.js:9)
+// at t.Timeline.<anonymous> (Tone.min.js:7)
+// at t.Timeline._iterate (Tone.min.js:7)
+// at t.Timeline.forEachAtTime (Tone.min.js:7)
