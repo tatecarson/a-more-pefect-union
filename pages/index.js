@@ -1,8 +1,4 @@
-//ngrok - ngrok http 8000
-//nodemon - nodemon /usr/local/bin/rhizome config
-// can't figure out how to reference the local version
 const client = new rhizome.Client();
-
 const mutationRate = 0.05; // A pretty high mutation rate here, our population is rather small we need to enforce variety
 const popmax = 1;
 
@@ -32,7 +28,6 @@ $(function() {
         //Add fitness and ID to an array so they can be concated with the genes array
         const fitID = [population.population[0].getFitness(), client.id];
 
-        //this sends twice!!
         client.send(
           "/fitness",
           fitID.concat(population.population[0].getDNA().genes)
@@ -81,3 +76,29 @@ client.on("message", function(addr, args) {
 
 Tone.Transport.start("+0.1");
 Tone.Transport.bpm.value = _.random(100, 200);
+
+// SOME BUGS TO FIX
+//
+//
+//These are probably really bad but I don't know if the users would notice
+//
+//FIXME: Uncaught Error: argument 2, invalid type
+// at _assertValid (rhizome.js:338)
+// at module.exports.send (rhizome.js:341)
+// at Toggle.e.on.v (index.js:35)
+// at Toggle.EventEmitter.emit (NexusUI.js:1388)
+// at Toggle.click (NexusUI.js:2393)
+// at Toggle.preClick (NexusUI.js:1053)
+// at SVGSVGElement.<anonymous> (NexusUI.js:1032)
+
+//FIXME: Tone.min.js:7 Uncaught SyntaxError: Tone.TimeBase: Unexpected token undefined
+// at Tone.min.js:7
+// at t.TimeBase._tokenize (Tone.min.js:7)
+// at t.TimeBase._parseExprString (Tone.min.js:7)
+// at t.TimeBase.set (Tone.min.js:7)
+// at t.TimeBase [as constructor] (Tone.min.js:7)
+// at new t.Time (Tone.min.js:7)
+// at t.MembraneSynth.t.toSeconds (Tone.min.js:7)
+// at t.MembraneSynth.t.Instrument.triggerAttackRelease (Tone.min.js:13)
+// at t.Loop.callback (melody.js:63)
+// at t.Loop._tick (Tone.min.js:12)

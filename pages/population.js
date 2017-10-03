@@ -59,8 +59,6 @@ function Population(mutationRate, num) {
       let child = crossover(momgenes, dadgenes);
 
       // Mutate their genes
-      //FIXME: mutation not working, it's in this function
-      // it's just supposed to insert a random value into some of the index's
       let mutateChild = mutate(child);
 
       // Fill the new population with the new child
@@ -82,7 +80,6 @@ function Population(mutationRate, num) {
 
   // Crossover
   // Creates new DNA sequence from two
-  // TODO: edit this so it works within this function with new data
   const crossover = function(mom, dad) {
     const child = new Array(mom.length);
     const cross = _.floor(_.random(mom.length));

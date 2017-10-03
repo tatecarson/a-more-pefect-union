@@ -41,7 +41,7 @@ function Melody(dna_) {
   this.newDNA = function(newDNA) {
     self.dna = newDNA;
 
-    var genes = self.dna.genes;
+    var genes = self.dna;
 
     self.melody = genes.map(e => {
       return _.floor(linlin(e, 0, 1, 300, 500));
@@ -56,8 +56,6 @@ function Melody(dna_) {
     interval = setInterval(() => {
       self.fitness += 0.25;
     }, 1000);
-
-    console.log(self.melody);
 
     self.loop = new Tone.Loop(function(time) {
       synth.triggerAttackRelease(
@@ -82,7 +80,6 @@ function Melody(dna_) {
     clearInterval(interval);
   };
 
-  //TODO: make sure this is working correctly
   this.getFitness = function() {
     return self.fitness;
   };
