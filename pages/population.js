@@ -1,33 +1,14 @@
 // Create the population
 function Population(mutationRate, num) {
   this.mutationRate = mutationRate; // Mutation rate
-  // this.population = []; // array to hold the current population
   this.someOtherPopulation = [];
   this.matingPool = [];
   this.generations = 0; // Number of generations
 
-  //TODO: refactor, only create one per client
-  // for (let i = 0; i < num; i++) {
   this.population = new Melody(new DNA());
-  // }
-
-  //seed your list
-  for (let i = 0; i < 10; i++) {
-    let geneList = [];
-
-    for (let i = 0; i < 20; i++) {
-      geneList[i] = _.random(0.0, 1.0, true);
-    }
-
-    this.someOtherPopulation.push({
-      fitness: 1,
-      clientID: client.id,
-      genes: geneList //turn back into an array
-    });
-  }
 
   // Generate a mating pool
-  this.selection = function() {
+  this.selection = function () {
     // Clear the ArrayList
     this.matingPool = [];
 
@@ -38,8 +19,14 @@ function Population(mutationRate, num) {
     // Based on fitness, each member will get added to the mating pool a certain number of times
     // A higher fitness = more entries to mating pool = more likely to be picked as a parent
     // A lower fitness = fewer entries to mating pool = less likely to be picked as a parent
+
+    this.someOtherPopulation.forEach(pop =>
+      console.log("each other pop: ", pop.clientID)
+    );
+
     console.log("someotherpopulation: ", this.someOtherPopulation.length);
 
+    //do for however many clients are connected
     for (let i = 0; i < this.someOtherPopulation.length; i++) {
       let fitnessNormal = linlin(
         this.someOtherPopulation[i].fitness,
@@ -52,6 +39,7 @@ function Population(mutationRate, num) {
       //create a new multiplier
       let n = _.floor(fitnessNormal * 100); // Arbitrary multiplier
 
+      //TODO: check to see that this is actually working
       for (let j = 0; j < n; j++) {
         this.matingPool.push(this.someOtherPopulation[i]);
       }
@@ -61,7 +49,7 @@ function Population(mutationRate, num) {
   };
 
   // Making the next generation
-  this.reproduction = function() {
+  this.reproduction = function () {
     // Refill the population with children from the mating pool
     // Sping the wheel of fortune to pick two parents
     let m = _.floor(_.random(this.matingPool.length));
@@ -86,28 +74,29 @@ function Population(mutationRate, num) {
 
   // Crossover
   // Creates new DNA sequence from two
-  const crossover = function(mom, dad) {
+  const crossover = function (mom, dad) {
     const child = new Array(mom.length);
     const cross = _.floor(_.random(mom.length));
     for (let i = 0; i < mom.length; i++) {
       if (i > cross) child[i] = mom[i];
       else child[i] = dad[i];
     }
-    return new DNA(child);
+
+    return child;
   };
 
   // Based on a mutation probability, picks a new _.random character in array spots
-  const mutate = function(m) {
-    for (var i = 0; i < m.genes.length; i++) {
+  const mutate = function (m) {
+    for (var i = 0; i < m.length; i++) {
       if (_.random(1, true) < mutationRate) {
-        m.genes[i] = _.random(1, true);
+        m[i] = _.random(1, true);
       }
     }
-    return m.genes;
+    return m;
   };
 
   // Find highest fintess for the population
-  this.getMaxFitness = function() {
+  this.getMaxFitness = function () {
     let record = 0;
     for (let i = 0; i < this.someOtherPopulation.length; i++) {
       if (this.someOtherPopulation[i].fitness > record) {

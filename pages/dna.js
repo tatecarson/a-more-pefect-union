@@ -12,6 +12,7 @@ function DNA(newgenes) {
     }
   }
 
+  //TODO: delete these since they were moved to population object?
   // Crossover
   // Creates new DNA sequence from two
   this.crossover = function(partner) {

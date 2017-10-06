@@ -20,17 +20,33 @@ $(function() {
   //on turns sound on, off turns off and generates new melody
   toggle.on("change", v => {
     if (v) {
+      //FIXME: seed only if clientID not found
+      //seed object for before client gets data from other clients
+      if (
+        typeof population.population.dna.genes === "undefined" ||
+        population.someOtherPopulation.length === 0
+      ) {
+        preSeed();
+      }
       population.population.play();
     } else {
       //stop loop
       population.population.loop.stop();
 
+      //guard against undefined
+      if (typeof population.population.dna.genes === "undefined") {
+        let geneList = [];
+
+        for (let i = 0; i < 20; i++) {
+          geneList[i] = _.random(0.0, 1.0, true);
+        }
+        population.population.dna.genes = geneList;
+      }
+
       //create next generation
       //Add fitness and ID to an array so they can be concated with the genes array
       const fitID = [population.population.getFitness(), client.id];
-      const data = fitID.concat(population.population.getDNA().genes);
-      console.log("data: ", data);
-
+      const data = fitID.concat(population.population.dna.genes);
       client.send("/fitness", data);
 
       //clear fitness
@@ -39,6 +55,8 @@ $(function() {
     }
   });
 });
+
+// preSeed();
 
 function nextGen() {
   population.selection();
@@ -57,6 +75,7 @@ client.on("connected", function() {
 });
 
 client.on("message", function(addr, args) {
+  //FIXME: seed only if clientID not found
   if (addr === "/fitness") {
     //TODO: rename this to population because all client devices make up population
     population.someOtherPopulation.push({
@@ -67,6 +86,21 @@ client.on("message", function(addr, args) {
   }
 });
 
+function preSeed() {
+  for (let i = 0; i < 2; i++) {
+    let geneList = [];
+
+    for (let i = 0; i < 20; i++) {
+      geneList[i] = _.random(0.0, 1.0, true);
+    }
+
+    population.someOtherPopulation.push({
+      fitness: 1,
+      clientID: client.id,
+      genes: geneList //turn back into an array
+    });
+  }
+}
 Tone.Transport.start("+0.1");
 Tone.Transport.bpm.value = _.random(100, 200);
 
@@ -74,15 +108,6 @@ Tone.Transport.bpm.value = _.random(100, 200);
 //
 //
 //These are probably really bad but I don't know if the users would notice
-//
-//FIXME: Uncaught Error: argument 2, invalid type
-// at _assertValid (rhizome.js:338)
-// at module.exports.send (rhizome.js:341)
-// at Toggle.e.on.v (index.js:35)
-// at Toggle.EventEmitter.emit (NexusUI.js:1388)
-// at Toggle.click (NexusUI.js:2393)
-// at Toggle.preClick (NexusUI.js:1053)
-// at SVGSVGElement.<anonymous> (NexusUI.js:1032)
 
 //FIXME: Tone.min.js:7 Uncaught SyntaxError: Tone.TimeBase: Unexpected token undefined
 // at Tone.min.js:7

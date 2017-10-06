@@ -38,8 +38,6 @@ function Melody(dna_) {
     return _.floor(linlin(e, 0, 1, 300, 500));
   });
 
-  console.log("this.melody", this.melody);
-
   this.newDNA = function(newDNA) {
     self.dna = newDNA;
 
@@ -48,15 +46,12 @@ function Melody(dna_) {
     self.melody = genes.map(e => {
       return _.floor(linlin(e, 0, 1, 300, 500));
     });
-
-    console.log("current melody: ", self.melody);
   };
 
   this.play = function() {
     //increase fitness by time spent with melody
     self.fitness = 0.25;
     const rNum = _.random(0, rhythmPatterns.length - 1);
-    console.log("rNum is: ", rNum);
 
     interval = setInterval(() => {
       self.fitness += 0.25;
