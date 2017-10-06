@@ -1,3 +1,9 @@
+//start rhizome on EC2, calls a fish alias
+//iea_rhizome
+//rhizome config
+
+//short url: https://goo.gl/hfy268
+
 const client = new rhizome.Client();
 const mutationRate = 0.05; // A pretty high mutation rate here, our population is rather small we need to enforce variety
 const popmax = 1;
@@ -9,49 +15,29 @@ const population = new Population(mutationRate, popmax);
 $(function() {
   StartAudioContext(Tone.context, document.documentElement);
 
-  const toggles = [];
-  for (var index = 0; index < population.population.length; index++) {
-    toggles[index] = Nexus.Add.Toggle("synth", {
-      size: [100, 50]
-    });
-  }
+  const toggle = Nexus.Add.Toggle("synth", { size: [100, 50] });
 
   //on turns sound on, off turns off and generates new melody
-  toggles.forEach((e, i) => {
-    e.on("change", v => {
-      if (v) {
-        population.population[i].play();
-      } else {
-        //stop loop
-        population.population[i].loop.stop();
+  toggle.on("change", v => {
+    if (v) {
+      population.population.play();
+    } else {
+      //stop loop
+      population.population.loop.stop();
 
-        //create next generation
-        nextGen();
+      //create next generation
+      //Add fitness and ID to an array so they can be concated with the genes array
+      const fitID = [population.population.getFitness(), client.id];
+      const data = fitID.concat(population.population.getDNA().genes);
+      console.log("data: ", data);
 
-        //Add fitness and ID to an array so they can be concated with the genes array
-        const fitID = [population.population[0].getFitness(), client.id];
+      client.send("/fitness", data);
 
-        client.send(
-          "/fitness",
-          fitID.concat(population.population[0].getDNA().genes)
-        );
-
-        //clear fitness
-        population.population[i].clear();
-      }
-    });
+      //clear fitness
+      nextGen();
+      population.population.clear();
+    }
   });
-
-  // const evolve = new Nexus.Add.TextButton("#evolve", {
-  //   size: [320, 50],
-  //   state: false,
-  //   text: "Evolve new generation",
-  //   alternate: false
-  // });
-
-  // evolve.on("change", v => {
-  //   if (v) nextGen();
-  // });
 });
 
 function nextGen() {
@@ -72,6 +58,7 @@ client.on("connected", function() {
 
 client.on("message", function(addr, args) {
   if (addr === "/fitness") {
+    //TODO: rename this to population because all client devices make up population
     population.someOtherPopulation.push({
       fitness: args[0],
       clientID: args[1],

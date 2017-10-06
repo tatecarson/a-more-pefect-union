@@ -8,8 +8,6 @@ function Melody(dna_) {
   var nextNote = 0;
   var nextRhythm = 0;
 
-  //TODO: add rhytmic patters; have genes map to an array index to pick a prechosen pattern
-  // lookat marimba mutations
   var rhythmPatterns = [
     ["1n"],
     ["2n", "2n"],
@@ -34,9 +32,13 @@ function Melody(dna_) {
   ];
 
   //TODO: make rhythmic choices reflect genes
+
+  //TODO: I maybe don't need this if I seed the melody before the client gets data from other clients
   this.melody = genes.map(e => {
     return _.floor(linlin(e, 0, 1, 300, 500));
   });
+
+  console.log("this.melody", this.melody);
 
   this.newDNA = function(newDNA) {
     self.dna = newDNA;
