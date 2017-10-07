@@ -15,25 +15,22 @@ const population = new Population(mutationRate, popmax);
 $(function() {
   StartAudioContext(Tone.context, document.documentElement);
 
-  const toggle = Nexus.Add.Toggle("synth", { size: [100, 50] });
+  const toggle = Nexus.Add.Toggle("synth", {
+    size: [100, 50]
+  });
+
+  //preseed once at the beginning
+  preSeed();
 
   //on turns sound on, off turns off and generates new melody
   toggle.on("change", v => {
     if (v) {
-      //FIXME: seed only if clientID not found
-      //seed object for before client gets data from other clients
-      if (
-        typeof population.population.dna.genes === "undefined" ||
-        population.someOtherPopulation.length === 0
-      ) {
-        preSeed();
-      }
       population.population.play();
     } else {
       //stop loop
       population.population.loop.stop();
 
-      //guard against undefined
+      //guard against undefined during performance
       if (typeof population.population.dna.genes === "undefined") {
         let geneList = [];
 
@@ -75,19 +72,32 @@ client.on("connected", function() {
 });
 
 client.on("message", function(addr, args) {
-  //FIXME: seed only if clientID not found
+  //FIXME: replace same client id instead of not adding
   if (addr === "/fitness") {
-    //TODO: rename this to population because all client devices make up population
-    population.someOtherPopulation.push({
-      fitness: args[0],
-      clientID: args[1],
-      genes: args.slice(2, args.length) //turn back into an array
+    population.someOtherPopulation.forEach(pop => {
+      console.log("client id", pop.clientID);
+
+      if (pop.clientID !== client.id) {
+        console.log("the client id is the same: ");
+        //TODO: rename this to population because all client devices make up population
+        population.someOtherPopulation.push({
+          fitness: args[0],
+          clientID: args[1],
+          genes: args.slice(2, args.length) //turn back into an array
+        });
+      }
     });
   }
 });
 
 function preSeed() {
-  for (let i = 0; i < 2; i++) {
+  //seed object at startfor before client gets data from other clients
+  if (
+    typeof population.population.dna.genes === "undefined" ||
+    population.someOtherPopulation.length === 0
+  ) {
+    console.log("preseeding");
+
     let geneList = [];
 
     for (let i = 0; i < 20; i++) {
@@ -99,7 +109,7 @@ function preSeed() {
       clientID: client.id,
       genes: geneList //turn back into an array
     });
-  }
+  } //seed object at startfor before client gets data from other clients
 }
 Tone.Transport.start("+0.1");
 Tone.Transport.bpm.value = _.random(100, 200);
@@ -120,15 +130,3 @@ Tone.Transport.bpm.value = _.random(100, 200);
 // at t.MembraneSynth.t.Instrument.triggerAttackRelease (Tone.min.js:13)
 // at t.Loop.callback (melody.js:63)
 // at t.Loop._tick (Tone.min.js:12)
-
-//FIXME: Uncaught TypeError: Cannot read property '4' of undefined
-// at t.Loop.callback (melody.js:66)
-// at t.Loop._tick (Tone.min.js:12)
-// at t.Event._tick (Tone.min.js:12)
-// at t.TransportRepeatEvent.t.TransportEvent.invoke (Tone.min.js:9)
-// at t.TransportRepeatEvent.invoke (Tone.min.js:9)
-// at t.TransportEvent.invoke (Tone.min.js:9)
-// at t.Timeline.<anonymous> (Tone.min.js:9)
-// at t.Timeline.<anonymous> (Tone.min.js:7)
-// at t.Timeline._iterate (Tone.min.js:7)
-// at t.Timeline.forEachAtTime (Tone.min.js:7)
