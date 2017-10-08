@@ -1,7 +1,7 @@
 function Melody(dna_) {
   var self = this;
   this.dna = dna_;
-  this.fitness = 1; // How good is this face?
+  this.fitness = 1; // How good is this melody?
   this.loop;
   var genes = this.dna.genes;
   var interval; //to turn off fitness timer
@@ -10,7 +10,6 @@ function Melody(dna_) {
 
   var rhythmPatterns = [
     ["1n"],
-    ["2n", "2n"],
     ["4n", "4n", "2n"],
     ["2n", "4n", "4n"],
     ["4n", "2n", "4n"],
@@ -31,9 +30,12 @@ function Melody(dna_) {
     ["8n", "8n", "8n", "8n", "8n", "8n", "8n", "8n"]
   ];
 
-  //TODO: make these rhythmic choices more interesting
+  //TODO: make these rhythmic choices more interesting - lookup in paper ways of seeding rhythm
+  //To read - Ariza 2002,
+  //TODO: genes reflect melody length
   //TODO: seed melodic choices somehow
-  //TODO:have genes reflect choices of instrument and timbre
+  //TODO: have genes reflect choices of instrument and timbre
+  //TODO: genes reflect tempo
 
   // starting melody here
   this.melody = genes.map(e => {
@@ -41,7 +43,6 @@ function Melody(dna_) {
   });
 
   this.rhythmIndex = _.floor(linlin(genes[0], 0, 1, 0, rhythmPatterns.length));
-  console.log("ri", this.rhythmIndex);
 
   this.newDNA = function(newDNA) {
     self.dna = newDNA;
@@ -61,27 +62,42 @@ function Melody(dna_) {
   this.play = function() {
     //increase fitness by time spent with melody
     self.fitness = 0.25;
-    // const rNum = _.random(0, rhythmPatterns.length - 1);
 
     interval = setInterval(() => {
       self.fitness += 0.25;
     }, 1000);
 
-    self.loop = new Tone.Loop(function(time) {
+    self.loop = new Tone.Loop(function(dur) {
+      // console.log(
+      //   "rhythm error: ",
+      //   rhythmPatterns[self.rhythmIndex][nextRhythm],
+      //   self.rhythmIndex,
+      //   nextRhythm
+      // );
+
+      console.log(
+        `pattern: ${rhythmPatterns[self.rhythmIndex]} Length: ${rhythmPatterns[
+          self.rhythmIndex
+        ].length} Index: ${nextRhythm}`
+      );
+
+      //FIXME: index one gives an error
       synth.triggerAttackRelease(
         self.melody[nextNote],
-        time,
+        dur,
         "+" + rhythmPatterns[self.rhythmIndex][nextRhythm]
       );
 
-      nextNote++;
-      nextRhythm++;
-
       if (nextNote >= self.melody.length) {
         nextNote = 0;
+      } else {
+        nextNote++;
       }
-      if (nextRhythm >= rhythmPatterns[self.rhythmIndex].length) {
+
+      if (nextRhythm == rhythmPatterns[self.rhythmIndex].length - 1) {
         nextRhythm = 0;
+      } else {
+        nextRhythm++;
       }
     }, "4n").start(0);
   };

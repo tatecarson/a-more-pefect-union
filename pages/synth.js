@@ -1,5 +1,4 @@
-// move this to another file and call population.population[0].play()
-
+//TODO: add onto this sound
 const synth = new Tone.MembraneSynth({
   pitchDecay: 0.008,
   octaves: 2,

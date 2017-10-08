@@ -1,12 +1,10 @@
 // Create the population
 function Population(mutationRate, num) {
   this.mutationRate = mutationRate; // Mutation rate
-  //TODO: name this population
   this.someOtherPopulation = [];
   this.matingPool = [];
   this.generations = 0; // Number of generations
 
-  //TODO: maybe just call this melody?
   this.population = new Melody(new DNA());
 
   // Generate a mating pool
@@ -67,6 +65,7 @@ function Population(mutationRate, num) {
     population.population.newDNA(mutateChild);
   };
 
+  //TODO: have 2 members of ensemble controlling crossover and mutate
   // Crossover
   // Creates new DNA sequence from two
   const crossover = function(mom, dad) {
@@ -90,6 +89,7 @@ function Population(mutationRate, num) {
     return m;
   };
 
+  //TODO: collect these and start to give them to hemi speakers??
   // Find highest fintess for the population
   this.getMaxFitness = function() {
     let record = 0;
@@ -101,6 +101,7 @@ function Population(mutationRate, num) {
 
     return record;
   };
+
   //restart population if it gets too big
   this.newPop = function(size) {
     if (this.someOtherPopulation.length > size) {

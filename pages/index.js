@@ -4,6 +4,10 @@
 
 //short url: https://goo.gl/hfy268
 
+//For composition
+//TODO: figure out how to incorporate the speakers of the two laptop ensemble members
+// read swarm music from ECM paper
+
 const client = new rhizome.Client();
 const mutationRate = 0.05; // A pretty high mutation rate here, our population is rather small we need to enforce variety
 const popmax = 1;
