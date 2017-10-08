@@ -30,33 +30,38 @@ function Melody(dna_) {
     ["8n", "8n", "8n", "8n", "8n", "8n", "8n", "8n"]
   ];
 
+  //TODO: genes reflect tempo
   //TODO: make these rhythmic choices more interesting - lookup in paper ways of seeding rhythm
   //To read - Ariza 2002,
-  //TODO: genes reflect melody length
   //TODO: seed melodic choices somehow
   //TODO: have genes reflect choices of instrument and timbre
-  //TODO: genes reflect tempo
 
   // starting melody here
-  this.melody = genes.map(e => {
-    return _.floor(linlin(e, 0, 1, 300, 500));
-  });
+  this.melody = genes.map(e => _.floor(linlin(e, 0, 1, 300, 500)));
+  this.melodyLengthVar = () => {
+    const length = _.floor(linlin(genes[3], 0, 1, 0, self.melody.length));
+    console.log(length);
 
+    return self.melody.slice(length);
+  };
   this.rhythmIndex = _.floor(linlin(genes[0], 0, 1, 0, rhythmPatterns.length));
 
   this.newDNA = function(newDNA) {
     self.dna = newDNA;
-
     var genes = self.dna;
 
-    self.melody = genes.map(e => {
-      return _.floor(linlin(e, 0, 1, 300, 500));
-    });
+    self.melody = genes.map(e => _.floor(linlin(e, 0, 1, 300, 500)));
+    console.log("self.melody", self.melody);
+
+    //slice array depending on genes
+    self.melodyLengthVar = () => {
+      const length = _.floor(linlin(genes[3], 0, 1, 0, self.melody.length));
+      return self.melody.slice(length);
+    };
 
     self.rhythmIndex = _.floor(
       linlin(genes[0], 0, 1, 0, rhythmPatterns.length)
     );
-    console.log("ri", self.rhythmIndex);
   };
 
   this.play = function() {
@@ -68,27 +73,13 @@ function Melody(dna_) {
     }, 1000);
 
     self.loop = new Tone.Loop(function(dur) {
-      // console.log(
-      //   "rhythm error: ",
-      //   rhythmPatterns[self.rhythmIndex][nextRhythm],
-      //   self.rhythmIndex,
-      //   nextRhythm
-      // );
-
-      console.log(
-        `pattern: ${rhythmPatterns[self.rhythmIndex]} Length: ${rhythmPatterns[
-          self.rhythmIndex
-        ].length} Index: ${nextRhythm}`
-      );
-
-      //FIXME: index one gives an error
       synth.triggerAttackRelease(
-        self.melody[nextNote],
+        self.melodyLengthVar()[nextNote],
         dur,
         "+" + rhythmPatterns[self.rhythmIndex][nextRhythm]
       );
 
-      if (nextNote >= self.melody.length) {
+      if (nextNote >= self.melodyLengthVar().length) {
         nextNote = 0;
       } else {
         nextNote++;
