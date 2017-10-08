@@ -31,12 +31,17 @@ function Melody(dna_) {
     ["8n", "8n", "8n", "8n", "8n", "8n", "8n", "8n"]
   ];
 
-  //TODO: make rhythmic choices reflect genes
+  //TODO: make these rhythmic choices more interesting
+  //TODO: seed melodic choices somehow
+  //TODO:have genes reflect choices of instrument and timbre
 
-  //TODO: I maybe don't need this if I seed the melody before the client gets data from other clients
+  // starting melody here
   this.melody = genes.map(e => {
     return _.floor(linlin(e, 0, 1, 300, 500));
   });
+
+  this.rhythmIndex = _.floor(linlin(genes[0], 0, 1, 0, rhythmPatterns.length));
+  console.log("ri", this.rhythmIndex);
 
   this.newDNA = function(newDNA) {
     self.dna = newDNA;
@@ -46,12 +51,17 @@ function Melody(dna_) {
     self.melody = genes.map(e => {
       return _.floor(linlin(e, 0, 1, 300, 500));
     });
+
+    self.rhythmIndex = _.floor(
+      linlin(genes[0], 0, 1, 0, rhythmPatterns.length)
+    );
+    console.log("ri", self.rhythmIndex);
   };
 
   this.play = function() {
     //increase fitness by time spent with melody
     self.fitness = 0.25;
-    const rNum = _.random(0, rhythmPatterns.length - 1);
+    // const rNum = _.random(0, rhythmPatterns.length - 1);
 
     interval = setInterval(() => {
       self.fitness += 0.25;
@@ -61,7 +71,7 @@ function Melody(dna_) {
       synth.triggerAttackRelease(
         self.melody[nextNote],
         time,
-        "+" + rhythmPatterns[rNum][nextRhythm]
+        "+" + rhythmPatterns[self.rhythmIndex][nextRhythm]
       );
 
       nextNote++;
@@ -70,7 +80,7 @@ function Melody(dna_) {
       if (nextNote >= self.melody.length) {
         nextNote = 0;
       }
-      if (nextRhythm >= rhythmPatterns[rNum].length) {
+      if (nextRhythm >= rhythmPatterns[self.rhythmIndex].length) {
         nextRhythm = 0;
       }
     }, "4n").start(0);
