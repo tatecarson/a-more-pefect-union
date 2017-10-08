@@ -41,6 +41,7 @@ $(function() {
       population.selection();
       population.reproduction();
       population.population.clear();
+      population.newPop(20); //if over a certain number clear
     }
   });
 });
@@ -61,7 +62,7 @@ client.on("message", function(addr, args) {
     population.someOtherPopulation.push({
       fitness: args[0],
       clientID: args[1],
-      genes: args.slice(2, args.length) //turn back into an array
+      genes: args.slice(2, args.length)
     });
   }
 });

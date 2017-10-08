@@ -1,10 +1,12 @@
 // Create the population
 function Population(mutationRate, num) {
   this.mutationRate = mutationRate; // Mutation rate
+  //TODO: name this population
   this.someOtherPopulation = [];
   this.matingPool = [];
   this.generations = 0; // Number of generations
 
+  //TODO: maybe just call this melody?
   this.population = new Melody(new DNA());
 
   // Generate a mating pool
@@ -20,8 +22,6 @@ function Population(mutationRate, num) {
     // A higher fitness = more entries to mating pool = more likely to be picked as a parent
     // A lower fitness = fewer entries to mating pool = less likely to be picked as a parent
 
-    console.log("someotherpopulation: ", this.someOtherPopulation.length);
-
     //do for however many clients are connected
     for (let i = 0; i < this.someOtherPopulation.length; i++) {
       let fitnessNormal = linlin(
@@ -35,7 +35,6 @@ function Population(mutationRate, num) {
       //create a new multiplier
       let n = _.floor(fitnessNormal * 100); // Arbitrary multiplier
 
-      //TODO: check to see that this is actually working
       for (let j = 0; j < n; j++) {
         this.matingPool.push(this.someOtherPopulation[i]);
       }
@@ -101,5 +100,11 @@ function Population(mutationRate, num) {
     }
 
     return record;
+  };
+  //restart population if it gets too big
+  this.newPop = function(size) {
+    if (this.someOtherPopulation.length > size) {
+      this.someOtherPopulation = [];
+    }
   };
 }
