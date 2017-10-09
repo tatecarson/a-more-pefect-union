@@ -63,6 +63,7 @@ client.on("connected", function() {
 
 client.on("message", function(addr, args) {
   if (addr === "/fitness") {
+    // https://scotch.io/tutorials/flex-those-javascript-array-muscles?utm_content=buffer7fad4&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer
     population.someOtherPopulation.push({
       fitness: args[0],
       clientID: args[1],

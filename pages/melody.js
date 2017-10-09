@@ -1,14 +1,14 @@
 function Melody(dna_) {
-  var self = this;
+  const self = this;
   this.dna = dna_;
   this.fitness = 1; // How good is this melody?
   this.loop;
-  var genes = this.dna.genes;
-  var interval; //to turn off fitness timer
-  var nextNote = 0;
-  var nextRhythm = 0;
+  const genes = this.dna.genes;
+  let interval; //to turn off fitness timer
+  let nextNote = 0;
+  let nextRhythm = 0;
 
-  var rhythmPatterns = [
+  const rhythmPatterns = [
     ["1n"],
     ["4n", "4n", "2n"],
     ["2n", "4n", "4n"],
@@ -38,20 +38,21 @@ function Melody(dna_) {
 
   // starting melody here
   this.melody = genes.map(e => _.floor(linlin(e, 0, 1, 300, 500)));
+
   this.melodyLengthVar = () => {
     const length = _.floor(linlin(genes[3], 0, 1, 0, self.melody.length));
-    console.log(length);
-
     return self.melody.slice(length);
   };
+
   this.rhythmIndex = _.floor(linlin(genes[0], 0, 1, 0, rhythmPatterns.length));
 
   this.newDNA = function(newDNA) {
     self.dna = newDNA;
-    var genes = self.dna;
+    const genes = self.dna;
 
+    //DO THIS NEXT !!!
+    //TODO: some notes distort
     self.melody = genes.map(e => _.floor(linlin(e, 0, 1, 300, 500)));
-    console.log("self.melody", self.melody);
 
     //slice array depending on genes
     self.melodyLengthVar = () => {
@@ -72,14 +73,10 @@ function Melody(dna_) {
       self.fitness += 0.25;
     }, 1000);
 
-    self.loop = new Tone.Loop(function(dur) {
-      synth.triggerAttackRelease(
-        self.melodyLengthVar()[nextNote],
-        dur,
-        "+" + rhythmPatterns[self.rhythmIndex][nextRhythm]
-      );
+    console.log("melody: ", self.melodyLengthVar());
 
-      if (nextNote >= self.melodyLengthVar().length) {
+    self.loop = new Tone.Loop(function(dur) {
+      if (nextNote >= self.melodyLengthVar().length - 1) {
         nextNote = 0;
       } else {
         nextNote++;
@@ -90,7 +87,18 @@ function Melody(dna_) {
       } else {
         nextRhythm++;
       }
-    }, "4n").start(0);
+
+      synth.triggerAttackRelease(
+        self.melodyLengthVar()[nextNote],
+        dur,
+        "+" + rhythmPatterns[self.rhythmIndex][nextRhythm]
+      );
+      console.log(
+        self.melodyLengthVar().length,
+        nextNote,
+        self.melodyLengthVar()[nextNote]
+      );
+    }, "4n").start();
   };
 
   this.clear = function() {

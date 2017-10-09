@@ -3,8 +3,6 @@ function Population(mutationRate, num) {
   this.mutationRate = mutationRate; // Mutation rate
   this.someOtherPopulation = [];
   this.matingPool = [];
-  this.generations = 0; // Number of generations
-
   this.population = new Melody(new DNA());
 
   // Generate a mating pool
@@ -14,11 +12,6 @@ function Population(mutationRate, num) {
 
     // Calculate total fitness of whole population
     let maxFitness = this.getMaxFitness();
-
-    // Calculate fitness for each member of the population (scaled to value between 0 and 1)
-    // Based on fitness, each member will get added to the mating pool a certain number of times
-    // A higher fitness = more entries to mating pool = more likely to be picked as a parent
-    // A lower fitness = fewer entries to mating pool = less likely to be picked as a parent
 
     //do for however many clients are connected
     for (let i = 0; i < this.someOtherPopulation.length; i++) {
@@ -37,8 +30,6 @@ function Population(mutationRate, num) {
         this.matingPool.push(this.someOtherPopulation[i]);
       }
     }
-
-    console.log("mating pool", this.matingPool);
   };
 
   // Making the next generation
@@ -56,10 +47,10 @@ function Population(mutationRate, num) {
     let dadgenes = dad.genes;
 
     // Mate their genes
-    let child = crossover(momgenes, dadgenes);
+    let child = this.crossover(momgenes, dadgenes);
 
     // Mutate their genes
-    let mutateChild = mutate(child);
+    let mutateChild = this.mutate(child);
 
     // Fill the new population with the new child
     population.population.newDNA(mutateChild);
@@ -68,7 +59,7 @@ function Population(mutationRate, num) {
   //TODO: have 2 members of ensemble controlling crossover and mutate
   // Crossover
   // Creates new DNA sequence from two
-  const crossover = function(mom, dad) {
+  this.crossover = function(mom, dad) {
     const child = new Array(mom.length);
     const cross = _.floor(_.random(mom.length));
     for (let i = 0; i < mom.length; i++) {
@@ -80,8 +71,8 @@ function Population(mutationRate, num) {
   };
 
   // Based on a mutation probability, picks a new _.random character in array spots
-  const mutate = function(m) {
-    for (var i = 0; i < m.length; i++) {
+  this.mutate = function(m) {
+    for (let i = 0; i < m.length; i++) {
       if (_.random(1, true) < mutationRate) {
         m[i] = _.random(1, true);
       }
