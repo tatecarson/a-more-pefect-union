@@ -30,13 +30,14 @@ function Melody(dna_) {
     ["8n", "8n", "8n", "8n", "8n", "8n", "8n", "8n"]
   ];
 
-  //TODO: genes reflect tempo
+  const synthPool = [membraneSynth, kalimba, eCello, thinSaws, brassCircuit];
+
+  //TODO: have genes reflect choices of instrument and timbre
   //TODO: make these rhythmic choices more interesting - lookup in paper ways of seeding rhythm
   //To read - Ariza 2002,
   //TODO: seed melodic choices somehow
-  //TODO: have genes reflect choices of instrument and timbre
 
-  // starting melody here
+  // setup starting values with this
   this.melody = genes.map(e => _.floor(linlin(e, 0, 1, 300, 500)));
 
   this.melodyLengthVar = () => {
@@ -45,13 +46,12 @@ function Melody(dna_) {
   };
 
   this.rhythmIndex = _.floor(linlin(genes[0], 0, 1, 0, rhythmPatterns.length));
+  this.tempo = _.floor(linlin(genes[4], 0, 1, 100, 250));
 
   this.newDNA = function(newDNA) {
     self.dna = newDNA;
     const genes = self.dna;
 
-    //DO THIS NEXT !!!
-    //TODO: some notes distort
     self.melody = genes.map(e => _.floor(linlin(e, 0, 1, 300, 500)));
 
     //slice array depending on genes
@@ -63,17 +63,22 @@ function Melody(dna_) {
     self.rhythmIndex = _.floor(
       linlin(genes[0], 0, 1, 0, rhythmPatterns.length)
     );
+
+    self.tempo = _.floor(linlin(genes[4], 0, 1, 100, 250));
   };
 
   this.play = function() {
+    const randSynth = _.random(0, synthPool.length - 1);
+
+    //change tempo depending on genes
+    Tone.Transport.bpm.value = self.tempo;
+
     //increase fitness by time spent with melody
     self.fitness = 0.25;
 
     interval = setInterval(() => {
       self.fitness += 0.25;
     }, 1000);
-
-    console.log("melody: ", self.melodyLengthVar());
 
     self.loop = new Tone.Loop(function(dur) {
       if (nextNote >= self.melodyLengthVar().length - 1) {
@@ -82,27 +87,30 @@ function Melody(dna_) {
         nextNote++;
       }
 
+      //FIXME: notes are holding over here and not stoping when loop stops
+      synthPool[randSynth].triggerAttackRelease(
+        self.melodyLengthVar()[nextNote],
+        dur,
+        "+" + rhythmPatterns[self.rhythmIndex][nextRhythm]
+      );
+
       if (nextRhythm == rhythmPatterns[self.rhythmIndex].length - 1) {
         nextRhythm = 0;
       } else {
         nextRhythm++;
       }
-
-      synth.triggerAttackRelease(
-        self.melodyLengthVar()[nextNote],
-        dur,
-        "+" + rhythmPatterns[self.rhythmIndex][nextRhythm]
-      );
-      console.log(
-        self.melodyLengthVar().length,
-        nextNote,
-        self.melodyLengthVar()[nextNote]
-      );
     }, "4n").start();
   };
 
   this.clear = function() {
     clearInterval(interval);
+
+    //if loop is stopped force release to guard agains hanging synths
+    if (self.loop.state === "stopped") {
+      synthPool.forEach(e => {
+        e.triggerRelease();
+      });
+    }
   };
 
   this.getFitness = function() {

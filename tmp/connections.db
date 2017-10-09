@@ -456,3 +456,9 @@
 {"_id":"zlBhrP6dad6xmRvL"}
 {"_id":"zrdcdTrChsdPhXah"}
 {"_id":"zrefwdo5dmHq7Cys"}
+{"_id":"opMs0cQXVcOt29qp"}
+{"connectionId":"opMs0cQXVcOt29qp","namespace":"websockets","data":{"subscriptions":[],"infos":{"os":"MacIntel","browser":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"}},"_id":"xpSKIkRQLl6qwzqy"}
+{"connectionId":"opMs0cQXVcOt29qp","namespace":"websockets","data":{"subscriptions":["/"],"infos":{"os":"MacIntel","browser":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"}},"_id":"xpSKIkRQLl6qwzqy"}
+{"_id":"CYmdzb6Jjo5XhFsm"}
+{"connectionId":"CYmdzb6Jjo5XhFsm","namespace":"websockets","data":{"subscriptions":[],"infos":{"os":"iPhone","browser":"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.0 Mobile/14G60 Safari/602.1"}},"_id":"I1fXe59MqFdCqGrm"}
+{"connectionId":"CYmdzb6Jjo5XhFsm","namespace":"websockets","data":{"subscriptions":["/"],"infos":{"os":"iPhone","browser":"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.0 Mobile/14G60 Safari/602.1"}},"_id":"I1fXe59MqFdCqGrm"}
