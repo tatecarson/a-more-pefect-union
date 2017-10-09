@@ -107,3 +107,83 @@ const brassCircuit = new Tone.MonoSynth({
     octaves: 1.5
   }
 }).toMaster();
+
+const pianoetta = new Tone.MonoSynth({
+  oscillator: {
+    type: "square"
+  },
+  filter: {
+    Q: 2,
+    type: "lowpass",
+    rolloff: -12
+  },
+  envelope: {
+    attack: 0.005,
+    decay: 3,
+    sustain: 0,
+    release: 0.45
+  },
+  filterEnvelope: {
+    attack: 0.001,
+    decay: 0.32,
+    sustain: 0.9,
+    release: 3,
+    baseFrequency: 700,
+    octaves: 2.3
+  }
+}).toMaster();
+
+const delicateWind = new Tone.Synth({
+  portamento: 0.0,
+  oscillator: {
+    type: "square4"
+  },
+  envelope: {
+    attack: 2,
+    decay: 1,
+    sustain: 0.2,
+    release: 2
+  }
+}).toMaster();
+
+const steelPan = new Tone.Synth({
+  oscillator: {
+    type: "fatcustom",
+    partials: [0.2, 1, 0, 0.5, 0.1],
+    spread: 40,
+    count: 3
+  },
+  envelope: {
+    attack: 0.001,
+    decay: 1.6,
+    sustain: 0,
+    release: 1.6
+  }
+}).toMaster();
+
+const superSaw = new Tone.Synth({
+  oscillator: {
+    type: "fatsawtooth",
+    count: 3,
+    spread: 30
+  },
+  envelope: {
+    attack: 0.01,
+    decay: 0.1,
+    sustain: 0.5,
+    release: 0.4,
+    attackCurve: "exponential"
+  }
+}).toMaster();
+
+const treeTrunk = new Tone.Synth({
+  oscillator: {
+    type: "sine"
+  },
+  envelope: {
+    attack: 0.001,
+    decay: 0.1,
+    sustain: 0.1,
+    release: 1.2
+  }
+}).toMaster();

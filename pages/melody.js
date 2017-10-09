@@ -30,9 +30,19 @@ function Melody(dna_) {
     ["8n", "8n", "8n", "8n", "8n", "8n", "8n", "8n"]
   ];
 
-  const synthPool = [membraneSynth, kalimba, eCello, thinSaws, brassCircuit];
+  const synthPool = [
+    membraneSynth,
+    kalimba,
+    eCello,
+    thinSaws,
+    brassCircuit,
+    pianoetta,
+    delicateWind,
+    steelPan,
+    superSaw,
+    treeTrunk
+  ];
 
-  //TODO: have genes reflect choices of instrument and timbre
   //TODO: make these rhythmic choices more interesting - lookup in paper ways of seeding rhythm
   //To read - Ariza 2002,
   //TODO: seed melodic choices somehow
@@ -47,16 +57,17 @@ function Melody(dna_) {
 
   this.rhythmIndex = _.floor(linlin(genes[0], 0, 1, 0, rhythmPatterns.length));
   this.tempo = _.floor(linlin(genes[4], 0, 1, 100, 250));
+  this.synth = _.floor(linlin(genes[5], 0, 1, 0, synthPool.length - 1));
 
   this.newDNA = function(newDNA) {
     self.dna = newDNA;
     const genes = self.dna;
 
-    self.melody = genes.map(e => _.floor(linlin(e, 0, 1, 300, 500)));
+    self.melody = genes.map(e => _.floor(linlin(e, 0, 1, 300, 700)));
 
     //slice array depending on genes
     self.melodyLengthVar = () => {
-      const length = _.floor(linlin(genes[3], 0, 1, 0, self.melody.length));
+      const length = _.floor(linlin(genes[3], 0, 1, 0, self.melody.length - 1));
       return self.melody.slice(length);
     };
 
@@ -65,11 +76,10 @@ function Melody(dna_) {
     );
 
     self.tempo = _.floor(linlin(genes[4], 0, 1, 100, 250));
+    self.synth = _.floor(linlin(genes[5], 0, 1, 0, synthPool.length - 1));
   };
 
   this.play = function() {
-    const randSynth = _.random(0, synthPool.length - 1);
-
     //change tempo depending on genes
     Tone.Transport.bpm.value = self.tempo;
 
@@ -87,8 +97,7 @@ function Melody(dna_) {
         nextNote++;
       }
 
-      //FIXME: notes are holding over here and not stoping when loop stops
-      synthPool[randSynth].triggerAttackRelease(
+      synthPool[self.synth].triggerAttackRelease(
         self.melodyLengthVar()[nextNote],
         dur,
         "+" + rhythmPatterns[self.rhythmIndex][nextRhythm]
