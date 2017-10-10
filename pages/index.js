@@ -8,6 +8,7 @@
 //TODO: figure out how to incorporate the speakers of the two laptop ensemble members
 // read swarm music from ECM paper
 
+//TODO: performance issue on phones, distorting clicking
 const client = new rhizome.Client();
 const mutationRate = 0.05; // A pretty high mutation rate here, our population is rather small we need to enforce variety
 const popmax = 1;
@@ -105,6 +106,9 @@ function ifUndefined() {
 }
 
 Tone.Transport.start("+0.1");
+
+//TODO: trying to get rid of clicks!!
+Tone.context.latencyHint = 0.7;
 
 // SOME BUGS TO FIX
 //
