@@ -45,8 +45,9 @@ function Melody(dna_) {
   ];
 
   //TODO: make these rhythmic choices more interesting - lookup in paper ways of seeding rhythm
-  //To read - Ariza 2002,
   //TODO: seed melodic choices somehow
+  //TODO: make sounds more unique
+  //TODO: add effects to sounds
 
   // setup starting values with this
   this.melody = genes.map(e => _.floor(linlin(e, 0, 1, 300, 500)));

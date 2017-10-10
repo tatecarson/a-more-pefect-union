@@ -20,7 +20,7 @@ $(function() {
   StartAudioContext(Tone.context, document.documentElement);
 
   const toggle = Nexus.Add.Toggle("synth", {
-    size: [100, 50]
+    size: [200, 100]
   });
 
   //preseed once at the beginning

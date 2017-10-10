@@ -1,20 +1,95 @@
-
-#client-banner {
-  font-family: gill sans, helvetica, sans serif;
-  font-size: 35px;
-  margin: 100px auto;
-  letter-spacing: 0.1em;
-  text-align:center;
+.ba {
+  border-style: solid;
+  border-width: 1px;
 }
 
-.disconnected {
-  color:#ddd;
+.b--black-10 {
+  border-color: rgba(0, 0, 0, 0.1);
 }
 
-.connected {
-  color:#2fb;
+.db {
+  display: block;
 }
 
-body {
-  background-color:#222;
+.lh-copy {
+  line-height: 1.5;
+}
+
+.link {
+  text-decoration: none;
+  transition: color 0.15s ease-in;
+}
+
+.link:link,
+.link:visited {
+  transition: color 0.15s ease-in;
+}
+
+.link:hover {
+  transition: color 0.15s ease-in;
+}
+
+.link:active {
+  transition: color 0.15s ease-in;
+}
+
+.link:focus {
+  transition: color 0.15s ease-in;
+  outline: 1px dotted currentColor;
+}
+
+.mw5 {
+  max-width: 30rem;
+}
+
+.black {
+  color: #000;
+}
+
+.gray {
+  color: #777;
+}
+
+.ml0 {
+  margin-left: 0;
+}
+
+.mt2 {
+  margin-top: 30%;
+}
+
+.tc {
+  text-align: center;
+}
+
+.f6 {
+  font-size: 0.875rem;
+}
+
+.center {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.clip {
+  position: fixed !important;
+  _position: absolute !important;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+.dim {
+  opacity: 1;
+  transition: opacity 0.15s ease-in;
+}
+
+.dim:hover,
+.dim:focus {
+  opacity: 0.5;
+  transition: opacity 0.15s ease-in;
+}
+
+.dim:active {
+  opacity: 0.8;
+  transition: opacity 0.15s ease-out;
 }
