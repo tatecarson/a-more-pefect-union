@@ -7,6 +7,7 @@ function Melody(dna_) {
   let interval; //to turn off fitness timer
   let nextNote = 0;
   let nextRhythm = 0;
+  let nextVel = 0;
 
   const rhythmPatterns = [
     ["1n"],
@@ -49,13 +50,13 @@ function Melody(dna_) {
 
   // setup starting values with this
   this.melody = genes.map(e => _.floor(linlin(e, 0, 1, 300, 500)));
-
   this.melodyLengthVar = () => {
     const length = _.floor(linlin(genes[3], 0, 1, 0, self.melody.length));
     return self.melody.slice(length);
   };
 
   this.rhythmIndex = _.floor(linlin(genes[0], 0, 1, 0, rhythmPatterns.length));
+  this.velocity = genes.map(e => _.floor(linlin(e, 0, 1, 0, 0.7), 2));
   this.tempo = _.floor(linlin(genes[4], 0, 1, 100, 250));
   this.synth = _.floor(linlin(genes[5], 0, 1, 0, synthPool.length - 1));
 
@@ -74,6 +75,8 @@ function Melody(dna_) {
     self.rhythmIndex = _.floor(
       linlin(genes[0], 0, 1, 0, rhythmPatterns.length)
     );
+    self.velocity = genes.map(e => _.floor(linlin(e, 0, 1, 0, 0.7), 2));
+    console.log(self.velocity);
 
     self.tempo = _.floor(linlin(genes[4], 0, 1, 100, 250));
     self.synth = _.floor(linlin(genes[5], 0, 1, 0, synthPool.length - 1));
@@ -100,13 +103,20 @@ function Melody(dna_) {
       synthPool[self.synth].triggerAttackRelease(
         self.melodyLengthVar()[nextNote],
         dur,
-        "+" + rhythmPatterns[self.rhythmIndex][nextRhythm]
+        "+" + rhythmPatterns[self.rhythmIndex][nextRhythm],
+        self.velocity[nextVel]
       );
 
       if (nextRhythm == rhythmPatterns[self.rhythmIndex].length - 1) {
         nextRhythm = 0;
       } else {
         nextRhythm++;
+      }
+
+      if (nextVel == self.velocity.length - 1) {
+        nextVel = 0;
+      } else {
+        nextVel++;
       }
     }, "4n").start();
   };
