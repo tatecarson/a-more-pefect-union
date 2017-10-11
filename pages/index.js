@@ -3,10 +3,7 @@
 //rhizome config
 
 //short url: https://goo.gl/hfy268
-
-//For composition
-//TODO: figure out how to incorporate the speakers of the two laptop ensemble members
-// read swarm music from ECM paper
+//TODO: replace with EMDM.io
 
 //TODO: performance issue on phones, distorting clicking
 const client = new rhizome.Client();
@@ -106,9 +103,6 @@ function ifUndefined() {
 }
 
 Tone.Transport.start("+0.1");
-
-//TODO: trying to get rid of clicks!!
-Tone.context.latencyHint = 0.7;
 
 // SOME BUGS TO FIX
 //

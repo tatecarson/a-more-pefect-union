@@ -56,7 +56,7 @@ function Population(mutationRate, num) {
     population.population.newDNA(mutateChild);
   };
 
-  //TODO: have 2 members of ensemble controlling crossover and mutate
+  //TODO: make crossover and mutatoin more intelligent
   // Crossover
   // Creates new DNA sequence from two
   this.crossover = function(mom, dad) {
@@ -80,7 +80,6 @@ function Population(mutationRate, num) {
     return m;
   };
 
-  //TODO: collect these and start to give them to hemi speakers??
   // Find highest fintess for the population
   this.getMaxFitness = function() {
     let record = 0;

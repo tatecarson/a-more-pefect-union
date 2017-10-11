@@ -44,20 +44,46 @@ function Melody(dna_) {
     treeTrunk
   ];
 
+  //combine values for part
+  this.merge = (timeArr, noteArr, velocityArr) => {
+    const length = Math.min(timeArr.length, noteArr.length, velocityArr.length);
+    const ret = [];
+
+    for (let i = 0; i < length; i++) {
+      ret.push({
+        time: timeArr[i],
+        note: noteArr[i],
+        velocity: velocityArr[i]
+      });
+    }
+
+    return ret;
+  };
+
   //TODO: make these rhythmic choices more interesting - lookup in paper ways of seeding rhythm
   //TODO: seed melodic choices somehow
   //TODO: make sounds more unique
   //TODO: add effects to sounds
 
   // setup starting values with this
-  this.melody = genes.map(e => _.floor(linlin(e, 0, 1, 300, 500)));
-  this.melodyLengthVar = () => {
-    const length = _.floor(linlin(genes[3], 0, 1, 0, self.melody.length));
-    return self.melody.slice(length);
-  };
+  this.melodyLong = genes.map(e => _.floor(linlin(e, 0, 1, 300, 500)));
 
+  //slice melody into shorter chunks
+  this.melody = () => {
+    const length = _.floor(linlin(genes[3], 0, 1, 0, self.melodyLong.length));
+    return self.melodyLong.slice(length);
+  };
   this.rhythmIndex = _.floor(linlin(genes[0], 0, 1, 0, rhythmPatterns.length));
+  // console.log(rhythmPatterns[this.rhythmIndex]);
+
   this.velocity = genes.map(e => _.floor(linlin(e, 0, 1, 0, 0.7), 2));
+
+  this.part = this.merge(
+    rhythmPatterns[this.rhythmIndex],
+    this.melody(),
+    this.velocity
+  );
+
   this.tempo = _.floor(linlin(genes[4], 0, 1, 100, 250));
   this.synth = _.floor(linlin(genes[5], 0, 1, 0, synthPool.length - 1));
 
@@ -65,19 +91,26 @@ function Melody(dna_) {
     self.dna = newDNA;
     const genes = self.dna;
 
-    self.melody = genes.map(e => _.floor(linlin(e, 0, 1, 300, 700)));
+    self.melodyLong = genes.map(e => _.floor(linlin(e, 0, 1, 300, 700)));
 
     //slice array depending on genes
-    self.melodyLengthVar = () => {
-      const length = _.floor(linlin(genes[3], 0, 1, 0, self.melody.length - 1));
-      return self.melody.slice(length);
+    self.melody = () => {
+      const length = _.floor(
+        linlin(genes[3], 0, 1, 0, self.melodyLong.length - 1)
+      );
+      return self.melodyLong.slice(length);
     };
 
     self.rhythmIndex = _.floor(
       linlin(genes[0], 0, 1, 0, rhythmPatterns.length)
     );
     self.velocity = genes.map(e => _.floor(linlin(e, 0, 1, 0, 0.7), 2));
-    console.log(self.velocity);
+
+    self.part = this.merge(
+      rhythmPatterns[self.rhythmIndex],
+      self.melody(),
+      self.velocity
+    );
 
     self.tempo = _.floor(linlin(genes[4], 0, 1, 100, 250));
     self.synth = _.floor(linlin(genes[5], 0, 1, 0, synthPool.length - 1));
@@ -94,25 +127,25 @@ function Melody(dna_) {
       self.fitness += 0.25;
     }, 1000);
 
-    self.loop = new Tone.Loop(function(dur) {
-      if (nextNote >= self.melodyLengthVar().length - 1) {
+    //TODO: convert to tone.part
+    self.loop = new Tone.Loop(function(time) {
+      if (nextNote >= self.melody().length - 1) {
         nextNote = 0;
       } else {
         nextNote++;
       }
-
-      synthPool[self.synth].triggerAttackRelease(
-        self.melodyLengthVar()[nextNote],
-        dur,
-        "+" + rhythmPatterns[self.rhythmIndex][nextRhythm],
-        self.velocity[nextVel]
-      );
-
       if (nextRhythm == rhythmPatterns[self.rhythmIndex].length - 1) {
         nextRhythm = 0;
       } else {
         nextRhythm++;
       }
+
+      synthPool[self.synth].triggerAttackRelease(
+        self.melody()[nextNote],
+        "8n",
+        time + Tone.Time(rhythmPatterns[self.rhythmIndex][nextRhythm]),
+        self.velocity[nextVel]
+      );
 
       if (nextVel == self.velocity.length - 1) {
         nextVel = 0;
