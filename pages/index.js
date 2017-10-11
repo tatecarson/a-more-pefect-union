@@ -30,7 +30,7 @@ $(function() {
       population.population.play();
     } else {
       //stop loop
-      population.population.loop.stop();
+      population.population.phrase.stop();
 
       //guard against undefined during performance
       ifUndefined();

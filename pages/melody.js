@@ -74,9 +74,8 @@ function Melody(dna_) {
     return self.melodyLong.slice(length);
   };
   this.rhythmIndex = _.floor(linlin(genes[0], 0, 1, 0, rhythmPatterns.length));
-  // console.log(rhythmPatterns[this.rhythmIndex]);
 
-  this.velocity = genes.map(e => _.floor(linlin(e, 0, 1, 0, 0.7), 2));
+  this.velocity = genes.map(e => _.floor(linlin(e, 0, 1, 0.1, 0.7), 2));
 
   this.part = this.merge(
     rhythmPatterns[this.rhythmIndex],
@@ -104,13 +103,15 @@ function Melody(dna_) {
     self.rhythmIndex = _.floor(
       linlin(genes[0], 0, 1, 0, rhythmPatterns.length)
     );
-    self.velocity = genes.map(e => _.floor(linlin(e, 0, 1, 0, 0.7), 2));
+    self.velocity = genes.map(e => _.floor(linlin(e, 0, 1, 0.1, 0.7), 2));
 
     self.part = this.merge(
       rhythmPatterns[self.rhythmIndex],
       self.melody(),
       self.velocity
     );
+
+    console.log(self.part);
 
     self.tempo = _.floor(linlin(genes[4], 0, 1, 100, 250));
     self.synth = _.floor(linlin(genes[5], 0, 1, 0, synthPool.length - 1));
@@ -127,43 +128,40 @@ function Melody(dna_) {
       self.fitness += 0.25;
     }, 1000);
 
-    //TODO: convert to tone.part
-    self.loop = new Tone.Loop(function(time) {
-      if (nextNote >= self.melody().length - 1) {
-        nextNote = 0;
-      } else {
-        nextNote++;
-      }
-      if (nextRhythm == rhythmPatterns[self.rhythmIndex].length - 1) {
-        nextRhythm = 0;
-      } else {
-        nextRhythm++;
-      }
+    //this works for some reason
+    // const phrase = [
+    //   { time: "2n", note: 655, velocity: 0.19 },
+    //   { time: "4n", note: 343, velocity: 0.25 },
+    //   { time: "8n", note: 696, velocity: 0.62 },
+    //   { time: "8n", note: 697, velocity: 0.07 }
+    // ];
+    // console.log(phrase);
+
+    //but not this
+    //FIXME: only playing first two notes
+    self.phrase = new Tone.Part((time, value) => {
+      // console.log(time, value);
 
       synthPool[self.synth].triggerAttackRelease(
-        self.melody()[nextNote],
-        "8n",
-        time + Tone.Time(rhythmPatterns[self.rhythmIndex][nextRhythm]),
-        self.velocity[nextVel]
+        value.note,
+        "4n",
+        time,
+        value.velocity
       );
+    }, self.part).start(0);
 
-      if (nextVel == self.velocity.length - 1) {
-        nextVel = 0;
-      } else {
-        nextVel++;
-      }
-    }, "4n").start();
+    self.phrase.loop = true;
   };
 
   this.clear = function() {
     clearInterval(interval);
 
     //if loop is stopped force release to guard agains hanging synths
-    if (self.loop.state === "stopped") {
-      synthPool.forEach(e => {
-        e.triggerRelease();
-      });
-    }
+    // if (self.part.state === "stopped") {
+    //   synthPool.forEach(e => {
+    //     e.triggerRelease();
+    //   });
+    // }
   };
 
   this.getFitness = function() {
