@@ -42,15 +42,42 @@ function Melody(dna_) {
   ];
 
   //combine values for part
-  this.merge = (timeArr, noteArr, velocityArr) =>
-    timeArr
-      .slice(0, Math.min(timeArr.length, noteArr.length, velocityArr.length))
-      .map((time, i) => ({
-        time,
+  //TODO: change to durArr = '4n' and then time to be each value of hte durArr added up
+  // like this:
+  // [
+  //   { time: 0, note: "C4", dur: "4n" },
+  //   { time: "4n + 8n", note: "E4", dur: "8n" },
+  //   { time: "2n", note: "G4", dur: "16n" },
+  //   { time: "2n + 8t", note: "B4", dur: "4n" }
+  // ];
+
+  // this.merge = (durArr, noteArr, velocityArr) =>
+  //   durArr
+  //   .slice(0, Math.min(durArr.length, noteArr.length, velocityArr.length))
+  //   .map((dur, i) => ({
+  //     //right now time = durArr
+  //     dur,
+  //     time: dur + dur, // TODO: something like this? accumulate the durations into the time
+  //     note: noteArr[i],
+  //     velocity: velocityArr[i]
+  //   }));
+
+  this.merge = (timeArr, noteArr, velocityArr) => {
+    const length = Math.min(timeArr.length, noteArr.length, velocityArr.length);
+    const ret = [];
+    let totalDuration = 0;
+    for (let i = 0; i < length; i++) {
+      ret.push({
+        dur: timeArr[i],
+        time: totalDuration,
         note: noteArr[i],
         velocity: velocityArr[i]
-      }));
+      });
+      totalDuration += "+" + timeArr[i];
+    }
 
+    return ret;
+  };
   //TODO: make these rhythmic choices more interesting - lookup in paper ways of seeding rhythm
   //TODO: seed melodic choices somehow
   //TODO: make sounds more unique
@@ -102,7 +129,7 @@ function Melody(dna_) {
       self.velocity
     );
 
-    console.log(self.part);
+    console.table(self.part);
 
     self.tempo = _.floor(linlin(genes[4], 0, 1, 100, 250));
     self.synth = _.floor(linlin(genes[5], 0, 1, 0, synthPool.length - 1));
@@ -119,58 +146,29 @@ function Melody(dna_) {
       self.fitness += 0.25;
     }, 1000);
 
-    //this works for some reason
-    const phrase = [
-      {
-        time: "2n",
-        note: 655,
-        velocity: 0.19
-      },
-      {
-        time: "4n",
-        note: 343,
-        velocity: 0.25
-      },
-      {
-        time: "8n",
-        note: 696,
-        velocity: 0.62
-      },
-      {
-        time: "8n",
-        note: 697,
-        velocity: 0.07
-      }
-    ];
-    // console.log(phrase);
-
-    //but not this
-    //FIXME: only playing first two notes
+    //FIXME: it doesn't work because time needs to start at 0 then add each duration cummulatively
     self.phrase = new Tone.Part((time, value) => {
       // console.log(time, value);
 
       synthPool[self.synth].triggerAttackRelease(
         value.note,
-        "4n",
+        value.dur,
         time,
         value.velocity
       );
     }, self.part).start(0);
-
-    console.log(self.phrase);
 
     self.phrase.loop = true;
   };
 
   this.clearFitness = function() {
     clearInterval(interval);
-
-    //if loop is stopped force release to guard agains hanging synths
-    // if (self.part.state === "stopped") {
-    //   synthPool.forEach(e => {
-    //     e.triggerRelease();
-    //   });
-    // }
+    //  if loop is stopped force release to guard agains hanging synths
+    if (self.part.state === "stopped") {
+      synthPool.forEach(e => {
+        e.triggerRelease();
+      });
+    }
   };
 
   this.getFitness = function() {
