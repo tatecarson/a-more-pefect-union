@@ -6,6 +6,8 @@ function Melody(dna_) {
   const genes = this.dna.genes;
   let interval; //to turn off fitness timer
 
+  //TODO: add more values
+  //TODO: insert rests
   const rhythmPatterns = [
     ["1n"],
     ["4n", "4n", "2n"],
@@ -41,27 +43,9 @@ function Melody(dna_) {
     treeTrunk
   ];
 
+  //TODO: fix melodic choices to a just intoned scale
+
   //combine values for part
-  //TODO: change to durArr = '4n' and then time to be each value of hte durArr added up
-  // like this:
-  // [
-  //   { time: 0, note: "C4", dur: "4n" },
-  //   { time: "4n + 8n", note: "E4", dur: "8n" },
-  //   { time: "2n", note: "G4", dur: "16n" },
-  //   { time: "2n + 8t", note: "B4", dur: "4n" }
-  // ];
-
-  // this.merge = (durArr, noteArr, velocityArr) =>
-  //   durArr
-  //   .slice(0, Math.min(durArr.length, noteArr.length, velocityArr.length))
-  //   .map((dur, i) => ({
-  //     //right now time = durArr
-  //     dur,
-  //     time: dur + dur, // TODO: something like this? accumulate the durations into the time
-  //     note: noteArr[i],
-  //     velocity: velocityArr[i]
-  //   }));
-
   this.merge = (timeArr, noteArr, velocityArr) => {
     const length = Math.min(timeArr.length, noteArr.length, velocityArr.length);
     const ret = [];
@@ -75,9 +59,9 @@ function Melody(dna_) {
       });
       totalDuration += "+" + timeArr[i];
     }
-
     return ret;
   };
+
   //TODO: make these rhythmic choices more interesting - lookup in paper ways of seeding rhythm
   //TODO: seed melodic choices somehow
   //TODO: make sounds more unique
@@ -146,10 +130,7 @@ function Melody(dna_) {
       self.fitness += 0.25;
     }, 1000);
 
-    //FIXME: it doesn't work because time needs to start at 0 then add each duration cummulatively
     self.phrase = new Tone.Part((time, value) => {
-      // console.log(time, value);
-
       synthPool[self.synth].triggerAttackRelease(
         value.note,
         value.dur,
