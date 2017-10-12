@@ -42,7 +42,7 @@ $(function() {
 
       population.selection();
       population.reproduction();
-      population.population.clear();
+      population.population.clearFitness();
       population.newPop(20); //if over a certain number clear
     }
   });
@@ -69,54 +69,4 @@ client.on("message", function(addr, args) {
   }
 });
 
-function preSeed() {
-  //seed object at startfor before client gets data from other clients
-  if (
-    typeof population.population.dna.genes === "undefined" ||
-    population.someOtherPopulation.length === 0
-  ) {
-    console.log("preseeding");
-
-    let geneList = [];
-
-    for (let i = 0; i < 20; i++) {
-      geneList[i] = _.random(0.0, 1.0, true);
-    }
-
-    population.someOtherPopulation.push({
-      fitness: 1,
-      clientID: client.id,
-      genes: geneList //turn back into an array
-    });
-  }
-}
-
-function ifUndefined() {
-  if (typeof population.population.dna.genes === "undefined") {
-    let geneList = [];
-
-    for (let i = 0; i < 20; i++) {
-      geneList[i] = _.random(0.0, 1.0, true);
-    }
-    population.population.dna.genes = geneList;
-  }
-}
-
 Tone.Transport.start("+0.1");
-
-// SOME BUGS TO FIX
-//
-//
-//These are probably really bad but I don't know if the users would notice
-
-//FIXME: Tone.min.js:7 Uncaught SyntaxError: Tone.TimeBase: Unexpected token undefined
-// at Tone.min.js:7
-// at t.TimeBase._tokenize (Tone.min.js:7)
-// at t.TimeBase._parseExprString (Tone.min.js:7)
-// at t.TimeBase.set (Tone.min.js:7)
-// at t.TimeBase [as constructor] (Tone.min.js:7)
-// at new t.Time (Tone.min.js:7)
-// at t.MembraneSynth.t.toSeconds (Tone.min.js:7)
-// at t.MembraneSynth.t.Instrument.triggerAttackRelease (Tone.min.js:13)
-// at t.Loop.callback (melody.js:63)
-// at t.Loop._tick (Tone.min.js:12)

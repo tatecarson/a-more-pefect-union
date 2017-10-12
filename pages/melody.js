@@ -5,9 +5,6 @@ function Melody(dna_) {
   this.loop;
   const genes = this.dna.genes;
   let interval; //to turn off fitness timer
-  let nextNote = 0;
-  let nextRhythm = 0;
-  let nextVel = 0;
 
   const rhythmPatterns = [
     ["1n"],
@@ -45,20 +42,14 @@ function Melody(dna_) {
   ];
 
   //combine values for part
-  this.merge = (timeArr, noteArr, velocityArr) => {
-    const length = Math.min(timeArr.length, noteArr.length, velocityArr.length);
-    const ret = [];
-
-    for (let i = 0; i < length; i++) {
-      ret.push({
-        time: timeArr[i],
+  this.merge = (timeArr, noteArr, velocityArr) =>
+    timeArr
+      .slice(0, Math.min(timeArr.length, noteArr.length, velocityArr.length))
+      .map((time, i) => ({
+        time,
         note: noteArr[i],
         velocity: velocityArr[i]
-      });
-    }
-
-    return ret;
-  };
+      }));
 
   //TODO: make these rhythmic choices more interesting - lookup in paper ways of seeding rhythm
   //TODO: seed melodic choices somehow
@@ -129,12 +120,28 @@ function Melody(dna_) {
     }, 1000);
 
     //this works for some reason
-    // const phrase = [
-    //   { time: "2n", note: 655, velocity: 0.19 },
-    //   { time: "4n", note: 343, velocity: 0.25 },
-    //   { time: "8n", note: 696, velocity: 0.62 },
-    //   { time: "8n", note: 697, velocity: 0.07 }
-    // ];
+    const phrase = [
+      {
+        time: "2n",
+        note: 655,
+        velocity: 0.19
+      },
+      {
+        time: "4n",
+        note: 343,
+        velocity: 0.25
+      },
+      {
+        time: "8n",
+        note: 696,
+        velocity: 0.62
+      },
+      {
+        time: "8n",
+        note: 697,
+        velocity: 0.07
+      }
+    ];
     // console.log(phrase);
 
     //but not this
@@ -150,10 +157,12 @@ function Melody(dna_) {
       );
     }, self.part).start(0);
 
+    console.log(self.phrase);
+
     self.phrase.loop = true;
   };
 
-  this.clear = function() {
+  this.clearFitness = function() {
     clearInterval(interval);
 
     //if loop is stopped force release to guard agains hanging synths

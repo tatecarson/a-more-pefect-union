@@ -80,6 +80,7 @@ function Population(mutationRate, num) {
     return m;
   };
 
+  //TODO: this can be much shorter and succinct
   // Find highest fintess for the population
   this.getMaxFitness = function() {
     let record = 0;
