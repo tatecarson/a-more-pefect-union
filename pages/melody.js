@@ -3,6 +3,8 @@ function Melody(dna_) {
   this.dna = dna_;
   this.fitness = 1; // How good is this melody?
   this.loop;
+  this.melody = [];
+
   const genes = this.dna.genes;
   let interval; //to turn off fitness timer
 
@@ -92,24 +94,15 @@ function Melody(dna_) {
 
   // this is now indexes into the just array 
   this.melodyLong = genes.map(e => _.floor(linlin(e, 0, 1, 0, just.length)));
+  this.melodyLong.map((index, i) => this.melody[i] = just[index]);
 
-  //TODO: take the indexes and pick the freqs with them 
-
-  console.log(this.melodyLong);
-
-  //TODO: then shorten them 
-  //slice melody into shorter chunks
-  this.melody = () => {
-    const length = _.floor(linlin(genes[3], 0, 1, 0, self.melodyLong.length));
-    return self.melodyLong.slice(length);
-  };
   this.rhythmIndex = _.floor(linlin(genes[0], 0, 1, 0, rhythmPatterns.length));
 
   this.velocity = genes.map(e => _.floor(linlin(e, 0, 1, 0.1, 0.7), 2));
 
   this.part = this.merge(
     rhythmPatterns[this.rhythmIndex],
-    this.melody(),
+    this.melody,
     this.velocity
   );
 
@@ -119,16 +112,11 @@ function Melody(dna_) {
   this.newDNA = function (newDNA) {
     self.dna = newDNA;
     const genes = self.dna;
+    self.melody = [];
 
-    self.melodyLong = genes.map(e => _.floor(linlin(e, 0, 1, 300, 700)));
-
-    //slice array depending on genes
-    self.melody = () => {
-      const length = _.floor(
-        linlin(genes[3], 0, 1, 0, self.melodyLong.length - 1)
-      );
-      return self.melodyLong.slice(length);
-    };
+    // this is now indexes into the just array 
+    self.melodyLong = genes.map(e => _.floor(linlin(e, 0, 1, 0, just.length)));
+    self.melodyLong.map((index, i) => self.melody[i] = just[index]);
 
     self.rhythmIndex = _.floor(
       linlin(genes[0], 0, 1, 0, rhythmPatterns.length)
@@ -137,7 +125,7 @@ function Melody(dna_) {
 
     self.part = this.merge(
       rhythmPatterns[self.rhythmIndex],
-      self.melody(),
+      self.melody,
       self.velocity
     );
 
