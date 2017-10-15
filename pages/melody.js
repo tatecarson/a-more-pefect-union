@@ -44,6 +44,28 @@ function Melody(dna_) {
   ];
 
   //TODO: fix melodic choices to a just intoned scale
+  //well tunes piano scale 
+  Nexus.tune.createJIScale(
+    1 / 1,
+    567 / 512,
+    9 / 8,
+    147 / 128,
+    21 / 16,
+    1323 / 1024,
+    189 / 128,
+    3 / 2,
+    49 / 32,
+    7 / 4,
+    441 / 256,
+    63 / 32,
+    2 / 1
+  );
+
+  const just = [];
+  for (let i = 0; i < 12; i++) {
+    just[i] = Nexus.note(i);
+  }
+  console.log(just);
 
   //combine values for part
   this.merge = (timeArr, noteArr, velocityArr) => {
@@ -67,9 +89,15 @@ function Melody(dna_) {
   //TODO: make sounds more unique
   //TODO: add effects to sounds
 
-  // setup starting values with this
-  this.melodyLong = genes.map(e => _.floor(linlin(e, 0, 1, 300, 500)));
 
+  // this is now indexes into the just array 
+  this.melodyLong = genes.map(e => _.floor(linlin(e, 0, 1, 0, just.length)));
+
+  //TODO: take the indexes and pick the freqs with them 
+
+  console.log(this.melodyLong);
+
+  //TODO: then shorten them 
   //slice melody into shorter chunks
   this.melody = () => {
     const length = _.floor(linlin(genes[3], 0, 1, 0, self.melodyLong.length));
@@ -88,7 +116,7 @@ function Melody(dna_) {
   this.tempo = _.floor(linlin(genes[4], 0, 1, 100, 250));
   this.synth = _.floor(linlin(genes[5], 0, 1, 0, synthPool.length - 1));
 
-  this.newDNA = function(newDNA) {
+  this.newDNA = function (newDNA) {
     self.dna = newDNA;
     const genes = self.dna;
 
@@ -119,7 +147,7 @@ function Melody(dna_) {
     self.synth = _.floor(linlin(genes[5], 0, 1, 0, synthPool.length - 1));
   };
 
-  this.play = function() {
+  this.play = function () {
     //change tempo depending on genes
     Tone.Transport.bpm.value = self.tempo;
 
@@ -142,7 +170,7 @@ function Melody(dna_) {
     self.phrase.loop = true;
   };
 
-  this.clearFitness = function() {
+  this.clearFitness = function () {
     clearInterval(interval);
     //  if loop is stopped force release to guard agains hanging synths
     if (self.part.state === "stopped") {
@@ -152,11 +180,11 @@ function Melody(dna_) {
     }
   };
 
-  this.getFitness = function() {
+  this.getFitness = function () {
     return self.fitness;
   };
 
-  this.getDNA = function() {
+  this.getDNA = function () {
     return this.dna;
   };
 }
