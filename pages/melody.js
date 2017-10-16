@@ -45,7 +45,6 @@ function Melody(dna_) {
     treeTrunk
   ];
 
-  //TODO: fix melodic choices to a just intoned scale
   //well tunes piano scale 
   Nexus.tune.createJIScale(
     1 / 1,
@@ -63,11 +62,11 @@ function Melody(dna_) {
     2 / 1
   );
 
-  const just = [];
+  //add nexus notes to array 
+  const wtpScale = [];
   for (let i = 0; i < 12; i++) {
-    just[i] = Nexus.note(i);
+    wtpScale[i] = Nexus.note(i);
   }
-  console.log(just);
 
   //combine values for part
   this.merge = (timeArr, noteArr, velocityArr) => {
@@ -87,18 +86,19 @@ function Melody(dna_) {
   };
 
   //TODO: make these rhythmic choices more interesting - lookup in paper ways of seeding rhythm
-  //TODO: seed melodic choices somehow
   //TODO: make sounds more unique
   //TODO: add effects to sounds
 
-
-  // this is now indexes into the just array 
-  this.melodyLong = genes.map(e => _.floor(linlin(e, 0, 1, 0, just.length)));
-  this.melodyLong.map((index, i) => this.melody[i] = just[index]);
+  // this is now indexes into the wtpScale array 
+  this.melodyLong = genes.map(e => _.floor(linlin(e, 0, 1, 0, wtpScale.length)));
+  this.melodyLong.map((index, i) => this.melody[i] = wtpScale[index]);
 
   this.rhythmIndex = _.floor(linlin(genes[0], 0, 1, 0, rhythmPatterns.length));
 
-  this.velocity = genes.map(e => _.floor(linlin(e, 0, 1, 0.1, 0.7), 2));
+
+  this.velocity = genes.map(e =>
+      _.floor(linlin(e, 0, 1, 0.1, 0.7), 2))
+    .map((velocity, i) => genes[i] > 0.5 ? velocity[i] = 0 : velocity); //insert rests 
 
   this.part = this.merge(
     rhythmPatterns[this.rhythmIndex],
@@ -114,14 +114,15 @@ function Melody(dna_) {
     const genes = self.dna;
     self.melody = [];
 
-    // this is now indexes into the just array 
-    self.melodyLong = genes.map(e => _.floor(linlin(e, 0, 1, 0, just.length)));
-    self.melodyLong.map((index, i) => self.melody[i] = just[index]);
+    // this is now indexes into the wtpScale array 
+    self.melodyLong = genes.map(e => _.floor(linlin(e, 0, 1, 0, wtpScale.length)));
+    self.melodyLong.map((index, i) => self.melody[i] = wtpScale[index]);
 
     self.rhythmIndex = _.floor(
       linlin(genes[0], 0, 1, 0, rhythmPatterns.length)
     );
-    self.velocity = genes.map(e => _.floor(linlin(e, 0, 1, 0.1, 0.7), 2));
+    self.velocity = genes.map(e => _.floor(linlin(e, 0, 1, 0.1, 0.7), 2))
+      .map((velocity, i) => genes[i] > 0.6 ? velocity[i] = 0 : velocity); //insert rests ;
 
     self.part = this.merge(
       rhythmPatterns[self.rhythmIndex],
