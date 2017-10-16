@@ -187,3 +187,27 @@ const treeTrunk = new Tone.Synth({
     release: 1.2
   }
 }).toMaster();
+
+//TODO: experiment with building instruments
+var metal = new Tone.Players({
+  metal1: "./samples/bang_wood_on_metal1.wav",
+  metal2: "./samples/bang_wood_on_metal2.wav",
+  metal3: "./samples/bang_wood_on_metal3.wav",
+  metal4: "./samples/bang_wood_on_metal4.wav"
+}).toMaster();
+
+//more instruments
+
+var loop = new Tone.Loop(function(time) {
+  generatePlayer(metal);
+}, "8n");
+
+const generatePlayer = player => {
+  let randSample = _.sample(Object.keys(player._players));
+  console.log("sample: ", randSample);
+
+  player.get(randSample).start();
+  player.get(randSample).playbackRate = Nexus.tune.ratio(_.random(0, 12));
+};
+
+// loop.start();

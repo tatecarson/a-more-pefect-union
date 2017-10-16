@@ -2,14 +2,10 @@ function Melody(dna_) {
   const self = this;
   this.dna = dna_;
   this.fitness = 1; // How good is this melody?
-  this.loop;
   this.melody = [];
-
   const genes = this.dna.genes;
   let interval; //to turn off fitness timer
 
-  //TODO: add more values
-  //TODO: insert rests
   const rhythmPatterns = [
     ["1n"],
     ["4n", "4n", "2n"],
@@ -24,9 +20,9 @@ function Melody(dna_) {
     ["4n", "8n", "8n", "4n", "4n"],
     ["4n", "4n", "8n", "8n", "4n"],
     ["4n", "4n", "4n", "8n", "8n"],
-    ["8n", "8n", "8n", "8n", "4n", "4n"],
-    ["8n", "8n", "4n", "8n", "8n", "4n"],
-    ["8n", "8n", "4n", "4n", "8n", "8n"],
+    ["8n", "8n", "8n", "8n", '16n', "4n", "4n"],
+    ["8n", "8n", "4n", "8n", '16n', "8n", "4n"],
+    ["8n", "8n", "4n", "4n", '16n', "8n", "8n"],
     ["4n", "8n", "8n", "8n", "8n", "4n"],
     ["4n", "4n", "8n", "8n", "8n", "8n"],
     ["8n", "8n", "8n", "8n", "8n", "8n", "8n", "8n"]
@@ -85,7 +81,6 @@ function Melody(dna_) {
     return ret;
   };
 
-  //TODO: make these rhythmic choices more interesting - lookup in paper ways of seeding rhythm
   //TODO: make sounds more unique
   //TODO: add effects to sounds
 
@@ -121,6 +116,7 @@ function Melody(dna_) {
     self.rhythmIndex = _.floor(
       linlin(genes[0], 0, 1, 0, rhythmPatterns.length)
     );
+
     self.velocity = genes.map(e => _.floor(linlin(e, 0, 1, 0.1, 0.7), 2))
       .map((velocity, i) => genes[i] > 0.6 ? velocity[i] = 0 : velocity); //insert rests ;
 
