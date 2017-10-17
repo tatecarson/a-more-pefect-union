@@ -234,17 +234,15 @@ const panPot = new Tone.Players({
   panPot3: "./samples/pan_pot/pan_pot 5-Audio.mp3"
 }).toMaster();
 
-var loop = new Tone.Loop(function(time) {
-  generatePlayer(panPot);
-}, "8n");
+// var loop = new Tone.Loop(function(time) {
+//   generatePlayer(panPot);
+// }, "8n");
 
-const generatePlayer = player => {
-  let randSample = _.sample(Object.keys(player._players));
+// const generatePlayer = player => {
+//   let randSample = _.sample(Object.keys(player._players));
 
-  player.get(randSample).start();
-  player.get(randSample).playbackRate = Nexus.tune.ratio(_.random(0, 12));
-};
+//   player.get(randSample).start();
+//   player.get(randSample).playbackRate = Nexus.tune.ratio(_.random(0, 12));
+// };
 
-Tone.Buffer.on("load", () => loop.start());
-
-// loop.start();
+// Tone.Buffer.on("load", () => loop.start());

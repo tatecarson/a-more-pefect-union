@@ -3,6 +3,7 @@ function Melody(dna_) {
   this.dna = dna_;
   this.fitness = 1; // How good is this melody?
   this.melody = [];
+  self.phrase;
   const genes = this.dna.genes;
   let interval; //to turn off fitness timer
 
@@ -20,28 +21,17 @@ function Melody(dna_) {
     ["4n", "8n", "8n", "4n", "4n"],
     ["4n", "4n", "8n", "8n", "4n"],
     ["4n", "4n", "4n", "8n", "8n"],
-    ["8n", "8n", "8n", "8n", '16n', "4n", "4n"],
-    ["8n", "8n", "4n", "8n", '16n', "8n", "4n"],
-    ["8n", "8n", "4n", "4n", '16n', "8n", "8n"],
+    ["8n", "8n", "8n", "8n", "16n", "4n", "4n"],
+    ["8n", "8n", "4n", "8n", "16n", "8n", "4n"],
+    ["8n", "8n", "4n", "4n", "16n", "8n", "8n"],
     ["4n", "8n", "8n", "8n", "8n", "4n"],
     ["4n", "4n", "8n", "8n", "8n", "8n"],
     ["8n", "8n", "8n", "8n", "8n", "8n", "8n", "8n"]
   ];
 
-  const synthPool = [
-    membraneSynth,
-    kalimba,
-    eCello,
-    thinSaws,
-    brassCircuit,
-    pianoetta,
-    delicateWind,
-    steelPan,
-    superSaw,
-    treeTrunk
-  ];
+  const samplePool = [bell, marimba, kenong, musicBox, panPot, metal];
 
-  //well tunes piano scale 
+  //well tunes piano scale
   Nexus.tune.createJIScale(
     1 / 1,
     567 / 512,
@@ -58,13 +48,14 @@ function Melody(dna_) {
     2 / 1
   );
 
-  //add nexus notes to array 
+  //add nexus notes to array
   const wtpScale = [];
   for (let i = 0; i < 12; i++) {
-    wtpScale[i] = Nexus.note(i);
+    wtpScale[i] = Nexus.tune.ratio(i);
   }
 
   //combine values for part
+  //TODO: edit this, not really necessary with samples
   this.merge = (timeArr, noteArr, velocityArr) => {
     const length = Math.min(timeArr.length, noteArr.length, velocityArr.length);
     const ret = [];
@@ -81,19 +72,19 @@ function Melody(dna_) {
     return ret;
   };
 
-  //TODO: make sounds more unique
   //TODO: add effects to sounds
 
-  // this is now indexes into the wtpScale array 
-  this.melodyLong = genes.map(e => _.floor(linlin(e, 0, 1, 0, wtpScale.length)));
-  this.melodyLong.map((index, i) => this.melody[i] = wtpScale[index]);
+  // this is now indexes into the wtpScale array
+  this.melodyLong = genes.map(e =>
+    _.floor(linlin(e, 0, 1, 0, wtpScale.length))
+  );
+  this.melodyLong.map((index, i) => (this.melody[i] = wtpScale[index]));
 
   this.rhythmIndex = _.floor(linlin(genes[0], 0, 1, 0, rhythmPatterns.length));
 
-
-  this.velocity = genes.map(e =>
-      _.floor(linlin(e, 0, 1, 0.1, 0.7), 2))
-    .map((velocity, i) => genes[i] > 0.5 ? velocity[i] = 0 : velocity); //insert rests 
+  this.velocity = genes
+    .map(e => _.floor(linlin(e, 0, 1, 0.1, 0.7), 2))
+    .map((velocity, i) => (genes[i] > 0.5 ? (velocity[i] = 0) : velocity)); //insert rests
 
   this.part = this.merge(
     rhythmPatterns[this.rhythmIndex],
@@ -102,23 +93,26 @@ function Melody(dna_) {
   );
 
   this.tempo = _.floor(linlin(genes[4], 0, 1, 100, 250));
-  this.synth = _.floor(linlin(genes[5], 0, 1, 0, synthPool.length - 1));
+  this.sample = _.floor(linlin(genes[5], 0, 1, 0, samplePool.length - 1));
 
-  this.newDNA = function (newDNA) {
+  this.newDNA = function(newDNA) {
     self.dna = newDNA;
     const genes = self.dna;
     self.melody = [];
 
-    // this is now indexes into the wtpScale array 
-    self.melodyLong = genes.map(e => _.floor(linlin(e, 0, 1, 0, wtpScale.length)));
-    self.melodyLong.map((index, i) => self.melody[i] = wtpScale[index]);
+    // this is now indexes into the wtpScale array
+    self.melodyLong = genes.map(e =>
+      _.floor(linlin(e, 0, 1, 0, wtpScale.length))
+    );
+    self.melodyLong.map((index, i) => (self.melody[i] = wtpScale[index]));
 
     self.rhythmIndex = _.floor(
       linlin(genes[0], 0, 1, 0, rhythmPatterns.length)
     );
 
-    self.velocity = genes.map(e => _.floor(linlin(e, 0, 1, 0.1, 0.7), 2))
-      .map((velocity, i) => genes[i] > 0.6 ? velocity[i] = 0 : velocity); //insert rests ;
+    self.velocity = genes
+      .map(e => _.floor(linlin(e, 0, 1, 0.1, 0.7), 2))
+      .map((velocity, i) => (genes[i] > 0.6 ? (velocity[i] = 0) : velocity)); //insert rests ;
 
     self.part = this.merge(
       rhythmPatterns[self.rhythmIndex],
@@ -129,10 +123,10 @@ function Melody(dna_) {
     console.table(self.part);
 
     self.tempo = _.floor(linlin(genes[4], 0, 1, 100, 250));
-    self.synth = _.floor(linlin(genes[5], 0, 1, 0, synthPool.length - 1));
+    self.sample = _.floor(linlin(genes[5], 0, 1, 0, samplePool.length - 1));
   };
 
-  this.play = function () {
+  this.play = function() {
     //change tempo depending on genes
     Tone.Transport.bpm.value = self.tempo;
 
@@ -144,32 +138,37 @@ function Melody(dna_) {
     }, 1000);
 
     self.phrase = new Tone.Part((time, value) => {
-      synthPool[self.synth].triggerAttackRelease(
-        value.note,
-        value.dur,
-        time,
-        value.velocity
-      );
+      self.generatePlayer(samplePool[self.sample], value);
     }, self.part).start(0);
 
     self.phrase.loop = true;
+
+    //randomize samples for each instrument
+    self.generatePlayer = (player, value) => {
+      let randSample = _.sample(Object.keys(player._players));
+
+      player.get(randSample).start();
+
+      //TODO: velocity?
+      player.get(randSample).playbackRate = value.note;
+    };
   };
 
-  this.clearFitness = function () {
+  this.clearFitness = function() {
     clearInterval(interval);
     //  if loop is stopped force release to guard agains hanging synths
     if (self.part.state === "stopped") {
-      synthPool.forEach(e => {
+      samplePool.forEach(e => {
         e.triggerRelease();
       });
     }
   };
 
-  this.getFitness = function () {
+  this.getFitness = function() {
     return self.fitness;
   };
 
-  this.getDNA = function () {
+  this.getDNA = function() {
     return this.dna;
   };
 }
