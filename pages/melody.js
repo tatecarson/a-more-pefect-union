@@ -151,7 +151,6 @@ function Melody(dna_) {
       player.get(randSample).start();
 
       //TODO: velocity?
-      // console.log("playbackRate: ", value.note);
 
       player.get(randSample).playbackRate = value.note;
     };

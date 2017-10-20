@@ -1,11 +1,14 @@
 //TODO: make the samples for each player closer in pitch
 //some of them sound too different
+//connect players to volume to fade out
+const volume = new Tone.Volume(-5).toMaster();
+
 const metal = new Tone.Players({
   metal1: "./samples/metal/bang_wood_on_metal1.mp3",
   metal2: "./samples/metal/bang_wood_on_metal2.mp3",
   metal3: "./samples/metal/bang_wood_on_metal3.mp3",
   metal4: "./samples/metal/bang_wood_on_metal4.mp3"
-}).toMaster();
+}).connect(volume);
 
 const bell = new Tone.Players({
   bell1: "./samples/bell/bell_1a.mp3",
@@ -13,7 +16,7 @@ const bell = new Tone.Players({
   bell4: "./samples/bell/bell-octave1.mp3",
   bell5: "./samples/bell/bell-octave2.mp3",
   bell6: "./samples/bell/bellF.mp3"
-}).toMaster();
+}).connect(volume);
 
 const marimba = new Tone.Players({
   marimbaHard4: "./samples/marimba/MarimbaHardC4.mp3",
@@ -22,7 +25,7 @@ const marimba = new Tone.Players({
   marimbaSoft4: "./samples/marimba/MarimbaSoftC4.mp3",
   marimbaSoft5: "./samples/marimba/MarimbaSoftC5.mp3",
   marimbaSoft6: "./samples/marimba/MarimbaSoftC6.mp3"
-}).toMaster();
+}).connect(volume);
 //more instruments
 
 const kenong = new Tone.Players({
@@ -31,16 +34,16 @@ const kenong = new Tone.Players({
   kenong3: "./samples/kenong/Kenong90 4-Audio.mp3",
   kenong4: "./samples/kenong/Kenong90 5-Audio.mp3",
   kenong5: "./samples/kenong/Kenong90 6-Audio.mp3"
-}).toMaster();
+}).connect(volume);
 
 const musicBox = new Tone.Players({
   musicBox1: "./samples/music_box/music_box 3-Audio.mp3",
   musicBox2: "./samples/music_box/music_box 4-Audio.mp3",
   musicBox3: "./samples/music_box/music_box 5-Audio.mp3"
-}).toMaster();
+}).connect(volume);
 
 const panPot = new Tone.Players({
   panPot1: "./samples/pan_pot/pan_pot 3-Audio.mp3",
   panPot2: "./samples/pan_pot/pan_pot 4-Audio.mp3",
   panPot3: "./samples/pan_pot/pan_pot 5-Audio.mp3"
-}).toMaster();
+}).connect(volume);

@@ -2,10 +2,8 @@
 //iea_rhizome
 //rhizome config
 
-//short url: https://goo.gl/hfy268
-//TODO: replace with EMDM.io
+//short url: https://u.emdm.io
 
-//TODO: performance issue on phones, distorting clicking
 const client = new rhizome.Client();
 const mutationRate = 0.05; // A pretty high mutation rate here, our population is rather small we need to enforce variety
 const popmax = 1;
@@ -15,6 +13,8 @@ const population = new Population(mutationRate, popmax);
 
 //create gui
 $(function() {
+  const colors = ["#000", "#fff"];
+  Nexus.colors.accent = _.sample(colors);
   const toggle = Nexus.Add.Toggle("synth", {
     size: [200, 100]
   });
@@ -27,6 +27,7 @@ $(function() {
     if (v) {
       population.population.play();
 
+      //draw on phones
       draw10p();
     } else {
       //stop loop
@@ -47,6 +48,10 @@ $(function() {
     }
   });
 });
+
+//TODO: at given time start fading people out over 30 to 60 seconds
+//schedule
+// volume.volume.startFade(-90, _.random(30, 60));
 
 //Rhizome code
 client.start(function(err) {

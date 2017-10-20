@@ -5,14 +5,14 @@ let x = 0,
 let spacing = 60;
 let probability = 0.5;
 
-//TODO: need to redraw background when new genes come in
-// convert over this: https://github.com/RiccardoZaffalon/p5-Sketches/blob/master/p5-10print/index.html
+//TODO: when sound starts fading out have some sort of notice on phone
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  const canvas = createCanvas(windowWidth, windowHeight);
+  canvas.position(0, 0);
+  canvas.style("z-index", "-1");
   background(50, 65, 166);
   draw10p();
 }
-function draw() {}
 
 function draw10p() {
   let genes = sketchGenes;
@@ -20,33 +20,40 @@ function draw10p() {
   y = 0;
 
   //related to tempo
-  spacing = map(genes[4], 0, 1, 20, 60);
+  spacing = map(genes[4], 0, 1, 10, 150);
 
   probability = map(genes[4], 0, 1, 1, 0);
 
-  console.log("genes: ", genes);
-
   background(0);
   let n = Math.ceil(
-    (document.documentElement.clientWidth + spacing) /
-      spacing *
-      ((document.documentElement.clientHeight + spacing) / spacing)
+    (width + spacing) / spacing * ((height + spacing) / spacing)
   );
 
   for (let i = 0; i < n; i++) {
     stroke(255);
     strokeSize = map(_.sample(genes), 0, 1, 0.1, 5);
-
+    rectColor = map(genes[4], 0, 1, 0, 255);
     strokeWeight(strokeSize);
+
     if (_.sample(genes) < probability) {
-      point(x + spacing / 2, y + spacing);
-    } else {
-      line(x + strokeSize, y + spacing, x + spacing - strokeSize, y + spacing);
+      if (_.sample(genes) < probability) {
+        point(x + spacing / 2, y + spacing);
+      } else {
+        line(
+          x + strokeSize,
+          y + spacing,
+          x + spacing - strokeSize,
+          y + spacing
+        );
+      }
     }
+
     if (_.sample(genes) < probability) {
-      line(x, y, x + spacing, y + spacing);
-    } else {
-      line(x, y + spacing, x + spacing, y);
+      if (_.sample(genes) < probability) {
+        line(x, y, x + spacing, y + spacing);
+      } else {
+        line(x, y + spacing, x + spacing, y);
+      }
     }
 
     //more whitespace for slower tempos
@@ -57,7 +64,7 @@ function draw10p() {
     }
 
     x = x + spacing;
-    if (x >= width) {
+    if (x > width) {
       x = 0;
       y = y + spacing;
     }
