@@ -9,14 +9,12 @@
 const client = new rhizome.Client();
 const mutationRate = 0.05; // A pretty high mutation rate here, our population is rather small we need to enforce variety
 const popmax = 1;
-
+let sketchGenes = [0.3, 0.5, 0.6, 0.3, 0.5, 0.6, 0.3, 0.2, 0.4, 0.5];
 // Create a population with a target phrase, mutation rate, and population max
 const population = new Population(mutationRate, popmax);
 
 //create gui
 $(function() {
-  StartAudioContext(Tone.context, document.documentElement);
-
   const toggle = Nexus.Add.Toggle("synth", {
     size: [200, 100]
   });
@@ -28,6 +26,8 @@ $(function() {
   toggle.on("change", v => {
     if (v) {
       population.population.play();
+
+      draw10p();
     } else {
       //stop loop
       population.population.phrase.stop();
@@ -70,3 +70,4 @@ client.on("message", function(addr, args) {
 });
 
 Tone.Transport.start("+0.1");
+StartAudioContext(Tone.context, document.documentElement);

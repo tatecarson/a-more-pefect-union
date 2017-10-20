@@ -55,7 +55,6 @@ function Melody(dna_) {
   }
 
   //combine values for part
-  //TODO: edit this, not really necessary with samples
   this.merge = (timeArr, noteArr, velocityArr) => {
     const length = Math.min(timeArr.length, noteArr.length, velocityArr.length);
     const ret = [];
@@ -98,6 +97,7 @@ function Melody(dna_) {
   this.newDNA = function(newDNA) {
     self.dna = newDNA;
     const genes = self.dna;
+    sketchGenes = genes;
     self.melody = [];
 
     // this is now indexes into the wtpScale array
@@ -138,6 +138,7 @@ function Melody(dna_) {
     }, 1000);
 
     self.phrase = new Tone.Part((time, value) => {
+      //TODO: issue with samples cutting each other off
       self.generatePlayer(samplePool[self.sample], value);
     }, self.part).start(0);
 
@@ -150,6 +151,8 @@ function Melody(dna_) {
       player.get(randSample).start();
 
       //TODO: velocity?
+      // console.log("playbackRate: ", value.note);
+
       player.get(randSample).playbackRate = value.note;
     };
   };
@@ -170,5 +173,10 @@ function Melody(dna_) {
 
   this.getDNA = function() {
     return this.dna;
+  };
+
+  //TODO: draw genes
+  this.draw = () => {
+    return genes;
   };
 }
