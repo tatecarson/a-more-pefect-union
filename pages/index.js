@@ -5,6 +5,7 @@
 //short url: https://u.emdm.io
 
 const client = new rhizome.Client();
+let toggle = null; //define globally
 const mutationRate = 0.05; // A pretty high mutation rate here, our population is rather small we need to enforce variety
 const popmax = 1;
 let sketchGenes = [0.3, 0.5, 0.6, 0.3, 0.5, 0.6, 0.3, 0.2, 0.4, 0.5];
@@ -16,7 +17,7 @@ $(function() {
   Nexus.colors.fill = "#000";
   Nexus.colors.accent = "#000";
 
-  const toggle = Nexus.Add.Toggle("synth", {
+  toggle = Nexus.Add.Toggle("synth", {
     size: [200, 100]
   });
 
@@ -48,16 +49,19 @@ $(function() {
       population.newPop(20); //if over a certain number clear
     }
   });
+
+  //Schedule fading out at 8 minutes
+  Tone.Transport.schedule(function(time) {
+    volume.volume.exponentialRampTo(-90, _.random(30, 60));
+    console.log("Start Fading!");
+
+    //Trigger viz fadeout
+    drawEnd();
+
+    //turn off toggle
+    toggle.destroy();
+  }, "+60*8");
 });
-
-//Schedule fading out at 8 minutes
-Tone.Transport.schedule(function(time) {
-  volume.volume.exponentialRampTo(-90, _.random(30, 60));
-  console.log("Start Fading!");
-
-  //TODO: trigger different viz at time
-  // drawEnd()
-}, "+60*8");
 
 //Rhizome code
 client.start(function(err) {
@@ -85,7 +89,9 @@ client.on("message", function(addr, args) {
   if (addr === "/fade") {
     volume.volume.exponentialRampTo(-90, _.random(30, 60));
     console.log("force fading!");
-    // drawEnd()
+    //trigger Viz fade
+    drawEnd();
+    toggle.destroy();
   }
 });
 

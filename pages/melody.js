@@ -71,8 +71,6 @@ function Melody(dna_) {
     return ret;
   };
 
-  //TODO: add effects to sounds
-
   // this is now indexes into the wtpScale array
   this.melodyLong = genes.map(e =>
     _.floor(linlin(e, 0, 1, 0, wtpScale.length))
@@ -148,9 +146,6 @@ function Melody(dna_) {
       let randSample = _.sample(Object.keys(player._players));
 
       player.get(randSample).start();
-
-      //TODO: velocity?
-
       player.get(randSample).playbackRate = value.note;
     };
   };
@@ -167,14 +162,5 @@ function Melody(dna_) {
 
   this.getFitness = function() {
     return self.fitness;
-  };
-
-  this.getDNA = function() {
-    return this.dna;
-  };
-
-  //TODO: draw genes
-  this.draw = () => {
-    return genes;
   };
 }
