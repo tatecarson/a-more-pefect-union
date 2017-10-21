@@ -13,8 +13,8 @@ const population = new Population(mutationRate, popmax);
 
 //create gui
 $(function() {
-  const colors = ["#000", "#fff"];
-  Nexus.colors.accent = _.sample(colors);
+  //TODO: add background to contrast so button can be seen
+  Nexus.colors.accent = "#00dcff";
   const toggle = Nexus.Add.Toggle("synth", {
     size: [200, 100]
   });
@@ -49,9 +49,15 @@ $(function() {
   });
 });
 
-//TODO: at given time start fading people out over 30 to 60 seconds
-//schedule
-// volume.volume.startFade(-90, _.random(30, 60));
+//TODO: this should start only when they click button?
+// need some way to make sure this starts at the same time for everyone
+Tone.Transport.schedule(function(time) {
+  volume.volume.exponentialRampTo(-90, _.random(30, 60));
+  console.log("Start Fading!");
+
+  //TODO: trigger different viz at time
+  // drawEnd()
+}, "+60*8");
 
 //Rhizome code
 client.start(function(err) {
@@ -71,6 +77,15 @@ client.on("message", function(addr, args) {
       clientID: args[1],
       genes: args.slice(2, args.length)
     });
+  }
+});
+
+//FORCE OFF IF NEEDED!!!!
+//TODO: test this on multiple devices
+client.on("message", function(addr, args) {
+  if (addr === "/fade") {
+    volume.volume.exponentialRampTo(-90, _.random(30, 60));
+    console.log("force fading!");
   }
 });
 
