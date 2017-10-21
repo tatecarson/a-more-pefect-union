@@ -29,7 +29,7 @@ function Melody(dna_) {
     ["8n", "8n", "8n", "8n", "8n", "8n", "8n", "8n"]
   ];
 
-  const samplePool = [bell, marimba, kenong, musicBox, panPot, metal];
+  const samplePool = [bell, marimba, kenong, panPot, metal];
 
   //well tunes piano scale
   Nexus.tune.createJIScale(
@@ -138,7 +138,6 @@ function Melody(dna_) {
     }, 1000);
 
     self.phrase = new Tone.Part((time, value) => {
-      //TODO: issue with samples cutting each other off
       self.generatePlayer(samplePool[self.sample], value);
     }, self.part).start(0);
 

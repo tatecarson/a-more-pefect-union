@@ -1,7 +1,6 @@
-//TODO: make the samples for each player closer in pitch
-//some of them sound too different
-//connect players to volume to fade out
-const volume = new Tone.Volume(-5).toMaster();
+const reverb = new Tone.Freeverb().toMaster();
+reverb.wet.value = 0.4;
+const volume = new Tone.Volume(-10).connect(reverb);
 
 const metal = new Tone.Players({
   metal1: "./samples/metal/bang_wood_on_metal1.mp3",
@@ -26,7 +25,6 @@ const marimba = new Tone.Players({
   marimbaSoft5: "./samples/marimba/MarimbaSoftC5.mp3",
   marimbaSoft6: "./samples/marimba/MarimbaSoftC6.mp3"
 }).connect(volume);
-//more instruments
 
 const kenong = new Tone.Players({
   kenong1: "./samples/kenong/Kenong90 2-Audio.mp3",
@@ -34,12 +32,6 @@ const kenong = new Tone.Players({
   kenong3: "./samples/kenong/Kenong90 4-Audio.mp3",
   kenong4: "./samples/kenong/Kenong90 5-Audio.mp3",
   kenong5: "./samples/kenong/Kenong90 6-Audio.mp3"
-}).connect(volume);
-
-const musicBox = new Tone.Players({
-  musicBox1: "./samples/music_box/music_box 3-Audio.mp3",
-  musicBox2: "./samples/music_box/music_box 4-Audio.mp3",
-  musicBox3: "./samples/music_box/music_box 5-Audio.mp3"
 }).connect(volume);
 
 const panPot = new Tone.Players({

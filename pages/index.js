@@ -13,8 +13,9 @@ const population = new Population(mutationRate, popmax);
 
 //create gui
 $(function() {
-  //TODO: add background to contrast so button can be seen
-  Nexus.colors.accent = "#00dcff";
+  Nexus.colors.fill = "#000";
+  Nexus.colors.accent = "#000";
+
   const toggle = Nexus.Add.Toggle("synth", {
     size: [200, 100]
   });
@@ -49,8 +50,7 @@ $(function() {
   });
 });
 
-//TODO: this should start only when they click button?
-// need some way to make sure this starts at the same time for everyone
+//Schedule fading out at 8 minutes
 Tone.Transport.schedule(function(time) {
   volume.volume.exponentialRampTo(-90, _.random(30, 60));
   console.log("Start Fading!");
@@ -81,11 +81,11 @@ client.on("message", function(addr, args) {
 });
 
 //FORCE OFF IF NEEDED!!!!
-//TODO: test this on multiple devices
 client.on("message", function(addr, args) {
   if (addr === "/fade") {
     volume.volume.exponentialRampTo(-90, _.random(30, 60));
     console.log("force fading!");
+    // drawEnd()
   }
 });
 
