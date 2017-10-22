@@ -49,18 +49,6 @@ $(function() {
       population.newPop(20); //if over a certain number clear
     }
   });
-
-  //Schedule fading out at 8 minutes
-  Tone.Transport.schedule(function(time) {
-    volume.volume.exponentialRampTo(-90, _.random(30, 60));
-    console.log("Start Fading!");
-
-    //Trigger viz fadeout
-    drawEnd();
-
-    //turn off toggle
-    toggle.destroy();
-  }, "+60*8");
 });
 
 //Rhizome code
@@ -72,6 +60,25 @@ client.start(function(err) {
 
 client.on("connected", function() {
   console.log("connected");
+});
+
+//start counting and fade out after given time
+client.on("message", function(addr, args) {
+  if (addr === "/start") {
+    console.log("Composition Starting");
+
+    //Schedule fading out at 8 minutes
+    Tone.Transport.schedule(function(time) {
+      volume.volume.exponentialRampTo(-90, _.random(30, 60));
+      console.log("Start Fading!");
+
+      //Trigger viz fadeout
+      drawEnd();
+
+      //turn off toggle
+      toggle.destroy();
+    }, "+60*8");
+  }
 });
 
 client.on("message", function(addr, args) {

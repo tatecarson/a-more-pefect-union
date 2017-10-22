@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Start / Stop</title>
+
+    <script src="/rhizome/rhizome.js"></script>
+    <script language="javascript" type="text/javascript" src="libraries/NexusUI.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <script>
+        const client = new rhizome.Client();
+        //Rhizome code
+        client.start(function (err) {
+            if (err) throw err;
+            console.log("subscribing...");
+            client.send("/sys/subscribe", ["/"]);
+        });
+
+        client.on("connected", function () {
+            console.log("connected");
+        });
+
+        $(function () {
+
+            const start = new Nexus.TextButton('#start', {
+                'size': [250, 100],
+                'state': false,
+                'text': 'Start Composition',
+                'alternate': false
+            })
+
+            const stop = new Nexus.TextButton('#stop', {
+                'size': [250, 100],
+                'state': false,
+                'text': 'Stop Composition',
+                'alternate': false
+            })
+
+            //start timer 
+            start.on('change', v => {
+                if (v) {
+                    client.send('/start')
+                }
+            })
+
+            //force fade out if needed 
+            stop.on('change', v => {
+                if (v) {
+                    client.send('/fade')
+                }
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <div id="start"></div>
+    <div id="stop"></div>
+</body>
+
+</html>
