@@ -103,4 +103,7 @@ client.on("message", function(addr, args) {
 });
 
 Tone.Transport.start("+0.1");
+
+//TODO: swith to start when toggle is pressed
+// waiting for ben to tell me how
 StartAudioContext(Tone.context, document.documentElement);
