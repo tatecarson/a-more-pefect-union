@@ -25,6 +25,13 @@
         });
 
         $(function () {
+            const duration = new Nexus.Number('#duration', {
+                'size': [60, 30],
+                'value': 7,
+                'min': 1,
+                'max': 10,
+                'step': 1
+            })
 
             const start = new Nexus.TextButton('#start', {
                 'size': [250, 100],
@@ -32,7 +39,7 @@
                 'text': 'Start Composition',
                 'alternate': false
             })
-
+            start.colorize("fill", "#00ff21")
             const stop = new Nexus.TextButton('#stop', {
                 'size': [250, 100],
                 'state': false,
@@ -40,25 +47,25 @@
                 'alternate': false
             })
 
+            stop.colorize("fill", "#f00")
+
+            duration.on("change", v => client.send('/duration', [v]))
+
             //start timer 
-            start.on('change', v => {
-                if (v) {
-                    client.send('/start')
-                }
-            })
+            start.on('change', v => v ? client.send('/start') : null)
 
             //force fade out if needed 
-            stop.on('change', v => {
-                if (v) {
-                    client.send('/fade')
-                }
-            })
+            stop.on('change', v => v ? client.send('/fade') : null)
         })
     </script>
 </head>
 
 <body>
+    <div id="duration"></div>
+    <br>
     <div id="start"></div>
+    <br>
+    <br>
     <div id="stop"></div>
 </body>
 

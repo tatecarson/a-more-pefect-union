@@ -11,6 +11,7 @@ const popmax = 1;
 let sketchGenes = [0.3, 0.5, 0.6, 0.3, 0.5, 0.6, 0.3, 0.2, 0.4, 0.5];
 // Create a population with a target phrase, mutation rate, and population max
 const population = new Population(mutationRate, popmax);
+let duration = 7;
 
 //create gui
 $(function() {
@@ -65,7 +66,7 @@ client.on("connected", function() {
 //start counting and fade out after given time
 client.on("message", function(addr, args) {
   if (addr === "/start") {
-    console.log("Composition Starting");
+    console.log("Composition playing for", duration, "minutes");
 
     //Schedule fading out at 8 minutes
     Tone.Transport.schedule(function(time) {
@@ -77,7 +78,15 @@ client.on("message", function(addr, args) {
 
       //turn off toggle
       toggle.destroy();
-    }, "+60*8");
+      //toggle bg div
+      $(synth)[0].style.style.backgroundColor = "rgba(0, 0, 0, 0)";
+    }, `+${duration}*60`);
+  }
+});
+
+client.on("message", (addr, args) => {
+  if (addr === "/duration") {
+    duration = args[0];
   }
 });
 

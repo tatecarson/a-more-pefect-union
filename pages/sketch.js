@@ -127,6 +127,7 @@ function drawEnd() {
         y = y + spacing;
       }
     }
+
     fColor--;
     y--;
 
