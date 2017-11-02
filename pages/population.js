@@ -56,14 +56,21 @@ function Population(mutationRate, num) {
     population.population.newDNA(mutateChild);
   };
 
-  //TODO: make crossover and mutatoin more intelligent
+  //TODO: make crossover and mutation more intelligent
   // Crossover
   // Creates new DNA sequence from two
   this.crossover = function(mom, dad) {
+    //new array from the length of mom 
     const child = new Array(mom.length);
+    //get a random index between 0 and the length of mom 
     const cross = _.floor(_.random(mom.length));
+
+    //for each index of mom 
     for (let i = 0; i < mom.length; i++) {
+      //if i is less than cross (random index between 0 and the lenght of mom)
+      //mom passes on genes 
       if (i > cross) child[i] = mom[i];
+      //else dad passes on genes 
       else child[i] = dad[i];
     }
 

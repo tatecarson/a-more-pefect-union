@@ -31,7 +31,7 @@ function Melody(dna_) {
 
   const samplePool = [bell, marimba, kenong, panPot, metal];
 
-  //well tunes piano scale
+  //well tuned piano scale
   Nexus.tune.createJIScale(
     1 / 1,
     567 / 512,
