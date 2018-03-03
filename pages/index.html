@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>A More Perfect Union</title>
+  <title>A more perfect union</title>
   <script src="/rhizome/rhizome.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script language="javascript" type="text/javascript" src="libraries/NexusUI.js"></script>
@@ -23,12 +23,14 @@
     #synth {
       background-color: rgba(255, 255, 255, 0.26);
       max-width: 200px;
+
     }
 
     body {
       /* margin: 0; */
-      font-family: 'Lato', sans-serif;
-      font-size: 45pt
+      /* font-family: 'Lato', sans-serif; */
+      font-size: 45pt;
+      font-family: Georgia, 'Times New Roman', Times, serif
     }
 
     .overlay {
@@ -45,19 +47,56 @@
 
     .overlay-content {
       position: relative;
-      top: 25%;
+      top: 1%;
       width: 100%;
       text-align: center;
       margin-top: 30px;
       color: #f1f1f1;
     }
+
+    .remove-overlay {
+      background-color: #f8f8f8;
+      color: black
+    }
+
+    .move {
+      font-size: 30pt
+    }
   </style>
 </head>
 
 <body>
-  <div id="myNav" class="overlay" onclick="closeNav()">
+  <div id="myNav" class="overlay">
     <div class="overlay-content">
-      Tap anywhere to initialize audio
+      <h2>A more perfect union</h2>
+      <p>
+        Please take your phone off of silent and turn your sound all the way up.
+      </p>
+      <p>
+        When the piece starts, use the toggle switch to start playing a melody. Everyone's phone will be playing a different melody.
+      </p>
+      <p>
+        If you don’t like your melody, turn the toggle switch off and back on again. You will then hear a new melody.
+      </p>
+      <p>
+        The amount of time you listen to a melody affects whether aspects of that melody are generated on another person’s phone.
+        The longer you listen, the greater the chances.
+      </p>
+      <p>
+        You control the outcome of the composition. Through choosing sounds you like and skipping ones you don’t, we will collectively
+        create a musical composition.
+      </p>
+      <p> From the chaos will emerge
+        <i>A more perfect union</i>.
+      </p>
+      <div class="remove-overlay" onclick="closeNav()">
+        <p>
+          <h3>
+            TAP HERE TO START COMPOSING
+          </h3>
+        </p>
+      </div>
+      <p class="move">Please feel free to move around the space to experience the piece from different perspectives</p>
     </div>
   </div>
   <div id="synth"></div>

@@ -6,7 +6,7 @@ function Population(mutationRate, num) {
   this.population = new Melody(new DNA());
 
   // Generate a mating pool
-  this.selection = function() {
+  this.selection = function () {
     // Clear the ArrayList
     this.matingPool = [];
 
@@ -33,7 +33,7 @@ function Population(mutationRate, num) {
   };
 
   // Making the next generation
-  this.reproduction = function() {
+  this.reproduction = function () {
     // Refill the population with children from the mating pool
     // Sping the wheel of fortune to pick two parents
     let m = _.floor(_.random(this.matingPool.length));
@@ -59,7 +59,7 @@ function Population(mutationRate, num) {
   //TODO: make crossover and mutation more intelligent
   // Crossover
   // Creates new DNA sequence from two
-  this.crossover = function(mom, dad) {
+  this.crossover = function (mom, dad) {
     //new array from the length of mom 
     const child = new Array(mom.length);
     //get a random index between 0 and the length of mom 
@@ -78,7 +78,7 @@ function Population(mutationRate, num) {
   };
 
   // Based on a mutation probability, picks a new _.random character in array spots
-  this.mutate = function(m) {
+  this.mutate = function (m) {
     for (let i = 0; i < m.length; i++) {
       if (_.random(1, true) < mutationRate) {
         m[i] = _.random(1, true);
@@ -89,7 +89,7 @@ function Population(mutationRate, num) {
 
   //TODO: this can be much shorter and succinct
   // Find highest fintess for the population
-  this.getMaxFitness = function() {
+  this.getMaxFitness = function () {
     let record = 0;
     for (let i = 0; i < this.someOtherPopulation.length; i++) {
       if (this.someOtherPopulation[i].fitness > record) {
@@ -101,7 +101,7 @@ function Population(mutationRate, num) {
   };
 
   //restart population if it gets too big
-  this.newPop = function(size) {
+  this.newPop = function (size) {
     if (this.someOtherPopulation.length > size) {
       this.someOtherPopulation = [];
     }

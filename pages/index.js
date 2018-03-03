@@ -14,7 +14,7 @@ const population = new Population(mutationRate, popmax);
 let duration = 7;
 
 //create gui
-$(function() {
+$(function () {
   Nexus.colors.fill = "#000";
   Nexus.colors.accent = "#000";
 
@@ -53,23 +53,23 @@ $(function() {
 });
 
 //Rhizome code
-client.start(function(err) {
+client.start(function (err) {
   if (err) throw err;
   console.log("subscribing...");
   client.send("/sys/subscribe", ["/"]);
 });
 
-client.on("connected", function() {
+client.on("connected", function () {
   console.log("connected");
 });
 
 //start counting and fade out after given time
-client.on("message", function(addr, args) {
+client.on("message", function (addr, args) {
   if (addr === "/start") {
     console.log("Composition playing for", duration, "minutes");
 
     //Schedule fading out at 8 minutes
-    Tone.Transport.schedule(function(time) {
+    Tone.Transport.schedule(function (time) {
       volume.volume.exponentialRampTo(-90, _.random(30, 60));
       console.log("Start Fading!");
 
@@ -90,7 +90,7 @@ client.on("message", (addr, args) => {
   }
 });
 
-client.on("message", function(addr, args) {
+client.on("message", function (addr, args) {
   if (addr === "/fitness") {
     population.someOtherPopulation.push({
       fitness: args[0],
@@ -101,7 +101,7 @@ client.on("message", function(addr, args) {
 });
 
 //FORCE OFF IF NEEDED!!!!
-client.on("message", function(addr, args) {
+client.on("message", function (addr, args) {
   if (addr === "/fade") {
     volume.volume.exponentialRampTo(-90, _.random(30, 60));
     console.log("force fading!");
@@ -113,6 +113,4 @@ client.on("message", function(addr, args) {
 
 Tone.Transport.start("+0.1");
 
-//TODO: swith to start when toggle is pressed
-// waiting for ben to tell me how
 StartAudioContext(Tone.context, document.documentElement);
