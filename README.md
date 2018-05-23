@@ -1,4 +1,7 @@
-# A More Perfect Union 
+# A More Perfect Union
 
-Composition for cellphones and laptop ensemble 
+Composition for cellphones and laptop ensemble
 
+Browser/device testing courtesy of [BrowserStack](https://www.browserstack.com). They offer free testing to open source projects, perfect for all your distributed smartphone composing needs.
+
+![browserstack](https://p14.zdusercontent.com/attachment/1015988/11PXdst7QsMc7hMCgfmK9OYA7?token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..ABGqdiM3Qf8owbtM7XCeMw.LIaRUUkAsZ0EqjACGNrvv6mhxhsED9FhY6BZN1N9o7-ZhN-Q-qeCPXkA6aNqr7kig3Q331EFMj-2oOB7bHXh2nBE0FTII_4WctAX6aExpvWfHNqDlv0WBesGXB_0PDsdGJ4HRnwOb_XhIVDNQ3lcp2u7m3gzhU65BDxWBeyNEx60vqW9MH6VWi8ZpGUeUcbuB7HoDLNHqfp1z89ufgbHGGu7Nfdn2U-Y_i1Od5div5fjIz41oGD3ZTQeGdcoN2fyVZ5FSUsOf-YGQk6BbvbY3kAkw82PD2q4SfPpwkyPB2M.bnZymXzs0VEAmcWRzwS_mw)
