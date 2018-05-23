@@ -21,7 +21,7 @@ module.exports = {
       type: 'websockets',
       config: {
         port: 8000,
-        maxSockets: 500
+        maxSockets: 5000
       }
     }
   ],
