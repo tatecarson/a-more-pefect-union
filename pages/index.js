@@ -1,11 +1,11 @@
-//start rhizome on EC2, calls a fish alias
-//iea_rhizome
-//rhizome config
+// start rhizome on EC2, calls a fish alias
+// iea_rhizome
+// rhizome config
 
-//short url: https://u.emdm.io
+// short url: https://u.emdm.io
 
 const client = new rhizome.Client();
-let toggle = null; //define globally
+let toggle = null; // define globally
 const mutationRate = 0.05; // A pretty high mutation rate here, our population is rather small we need to enforce variety
 const popmax = 1;
 let sketchGenes = [0.3, 0.5, 0.6, 0.3, 0.5, 0.6, 0.3, 0.2, 0.4, 0.5];
@@ -13,85 +13,85 @@ let sketchGenes = [0.3, 0.5, 0.6, 0.3, 0.5, 0.6, 0.3, 0.2, 0.4, 0.5];
 const population = new Population(mutationRate, popmax);
 let duration = 7;
 
-//create gui
+// create gui
 $(function () {
-  Nexus.colors.fill = "#000";
-  Nexus.colors.accent = "#000";
+  Nexus.colors.fill = '#000';
+  Nexus.colors.accent = '#000';
 
-  toggle = Nexus.Add.Toggle("synth", {
+  toggle = Nexus.Add.Toggle('synth', {
     size: [200, 100]
   });
 
-  //preseed once at the beginning
+  // preseed once at the beginning
   preSeed();
 
-  //on turns sound on, off turns off and generates new melody
-  toggle.on("change", v => {
+  // on turns sound on, off turns off and generates new melody
+  toggle.on('change', v => {
     if (v) {
       population.population.play();
 
-      //draw on phones
+      // draw on phones
       draw10p();
     } else {
-      //stop loop
+      // stop loop
       population.population.phrase.stop();
 
-      //guard against undefined during performance
+      // guard against undefined during performance
       ifUndefined();
 
-      //create next generation
+      // create next generation
       const fitID = [population.population.getFitness(), client.id];
       const data = fitID.concat(population.population.dna.genes);
-      client.send("/fitness", data);
+      client.send('/fitness', data);
 
       population.selection();
       population.reproduction();
       population.population.clearFitness();
-      population.newPop(20); //if over a certain number clear
+      population.newPop(20); // if over a certain number clear
     }
   });
 });
 
-//Rhizome code
+// Rhizome code
 client.start(function (err) {
   if (err) throw err;
-  console.log("subscribing...");
-  client.send("/sys/subscribe", ["/"]);
+  console.log('subscribing...');
+  client.send('/sys/subscribe', ['/']);
 });
 
-client.on("connected", function () {
-  console.log("connected");
+client.on('connected', function () {
+  console.log('connected');
 });
 
-//start counting and fade out after given time
-client.on("message", function (addr, args) {
-  if (addr === "/start") {
-    console.log("Composition playing for", duration, "minutes");
+// start counting and fade out after given time
+client.on('message', function (addr, args) {
+  if (addr === '/start') {
+    console.log('Composition playing for', duration, 'minutes');
 
-    //Schedule fading out at 8 minutes
+    // Schedule fading out at 8 minutes
     Tone.Transport.schedule(function (time) {
       volume.volume.exponentialRampTo(-90, _.random(30, 60));
-      console.log("Start Fading!");
+      console.log('Start Fading!');
 
-      //Trigger viz fadeout
+      // Trigger viz fadeout
       drawEnd();
 
-      //turn off toggle
+      // turn off toggle
       toggle.destroy();
-      //toggle bg div
-      $(synth)[0].style.style.backgroundColor = "rgba(0, 0, 0, 0)";
+      // toggle bg div
+      $(synth)[0].style.style.backgroundColor = 'rgba(0, 0, 0, 0)';
     }, `+${duration}*60`);
   }
 });
 
-client.on("message", (addr, args) => {
-  if (addr === "/duration") {
+client.on('message', (addr, args) => {
+  if (addr === '/duration') {
     duration = args[0];
   }
 });
 
-client.on("message", function (addr, args) {
-  if (addr === "/fitness") {
+client.on('message', function (addr, args) {
+  if (addr === '/fitness') {
     population.someOtherPopulation.push({
       fitness: args[0],
       clientID: args[1],
@@ -100,17 +100,17 @@ client.on("message", function (addr, args) {
   }
 });
 
-//FORCE OFF IF NEEDED!!!!
-client.on("message", function (addr, args) {
-  if (addr === "/fade") {
+// FORCE OFF IF NEEDED!!!!
+client.on('message', function (addr, args) {
+  if (addr === '/fade') {
     volume.volume.exponentialRampTo(-90, _.random(30, 60));
-    console.log("force fading!");
-    //trigger Viz fade
+    console.log('force fading!');
+    // trigger Viz fade
     drawEnd();
     toggle.destroy();
   }
 });
 
-Tone.Transport.start("+0.1");
+Tone.Transport.start('+0.1');
 
 StartAudioContext(Tone.context, document.documentElement);

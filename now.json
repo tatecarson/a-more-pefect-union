@@ -1,0 +1,7 @@
+{
+  "alias": "ampu.site",
+  "public": true,
+  "features": {
+    "cloud": "v2"
+  }
+}

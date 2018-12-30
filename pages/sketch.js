@@ -5,19 +5,19 @@ let x = 0,
 let spacing = 60;
 let probability = 0.5;
 
-function setup() {
+function setup () {
   const canvas = createCanvas(windowWidth, windowHeight);
   canvas.position(0, 0);
-  canvas.style("z-index", "-1");
+  canvas.style('z-index', '-1');
   draw10p();
 }
 
-function draw10p() {
+function draw10p () {
   let genes = sketchGenes;
   x = 0;
   y = 0;
 
-  //related to tempo
+  // related to tempo
   spacing = map(genes[4], 0, 1, 10, 150);
 
   probability = map(genes[4], 0, 1, 1, 0);
@@ -54,7 +54,7 @@ function draw10p() {
       }
     }
 
-    //more whitespace for slower tempos
+    // more whitespace for slower tempos
     if (_.sample(genes) < probability) {
       rect(x, y, spacing, spacing);
     } else {
@@ -69,7 +69,7 @@ function draw10p() {
   }
 }
 
-function drawEnd() {
+function drawEnd () {
   let fColor = 255;
   let bg = 255;
   setInterval(() => {
@@ -77,7 +77,7 @@ function drawEnd() {
     x = 0;
     y = 0;
 
-    //related to tempo
+    // related to tempo
     spacing = map(genes[4], 0, 1, 10, 150);
 
     probability = map(genes[4], 0, 1, 1, 0);
@@ -114,7 +114,7 @@ function drawEnd() {
         }
       }
 
-      //more whitespace for slower tempos
+      // more whitespace for slower tempos
       if (_.sample(genes) < probability) {
         rect(x, y, spacing, spacing);
       } else {

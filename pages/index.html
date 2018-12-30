@@ -8,7 +8,7 @@
   <script src="libraries/p5.js"></script>
   <script src="libraries/p5.dom.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
-  <script language="javascript" type="text/javascript" src="https://tonejs.github.io/build/Tone.min.js"></script>
+  <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/tone@0.12.80/build/Tone.min.js"></script>
   <script src='https://cdn.rawgit.com/tambien/StartAudioContext/8da8637e/StartAudioContext.js'></script>
 
   <script src="helpers.js"></script>
@@ -18,7 +18,7 @@
   <script language="javascript" type="text/javascript" src="melody.js"></script>
   <script language="javascript" type="text/javascript" src="index.js"></script>
   <script src="sketch.js"></script>
-
+  <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet"> 
   <style>
     #synth {
       background-color: rgba(255, 255, 255, 0.26);
@@ -29,8 +29,15 @@
     body {
       /* margin: 0; */
       /* font-family: 'Lato', sans-serif; */
-      font-size: 45pt;
-      font-family: Georgia, 'Times New Roman', Times, serif
+      /* font-size: 45pt; */
+
+      /* font-family: Georgia, 'Times New Roman', Times, serif */
+      
+      
+      font-size: 30pt; 
+      font-family: 'Space Mono', monospace;
+
+
     }
 
     .overlay {
@@ -51,6 +58,8 @@
       width: 100%;
       text-align: center;
       margin-top: 30px;
+      /* margin: 30px 20px 20px 20px;  */
+      /* padding: 5%;  */
       color: #f1f1f1;
     }
 
@@ -69,7 +78,8 @@
   <div id="myNav" class="overlay">
     <div class="overlay-content">
       <h2>A more perfect union</h2>
-      <p>
+      <!-- Performance instructions -->
+      <!-- <p>
         Please take your phone off of silent and turn your sound all the way up.
       </p>
       <p>
@@ -85,6 +95,26 @@
       <p>
         You control the outcome of the composition. Through choosing sounds you like and skipping ones you don’t, we will collectively
         create a musical composition.
+      </p>
+      <p> From the chaos will emerge
+        <i>A more perfect union</i>.
+      </p> -->
+      <!-- Installation instructions - different wording-->
+      <p>
+        Please take your phone off of silent and turn your sound all the way up.
+      </p>
+      <p>
+        Use the toggle switch to start playing a melody. Everyone's phone will be playing a different melody.
+      </p>
+      <p>
+        If you don’t like your melody, turn the toggle switch off and back on again. You will then hear a new melody.
+      </p>
+      <p>
+        The amount of time you listen to a melody affects whether aspects of that melody are generated on another person’s phone.
+        The longer you listen, the greater the chances.
+      </p>
+      <p>
+        You control the outcome of the installation. Through choosing sounds you like and skipping ones you don’t, we will create a work of collective sound art.
       </p>
       <p> From the chaos will emerge
         <i>A more perfect union</i>.
@@ -105,6 +135,7 @@
     function closeNav() {
       document.getElementById("myNav").style.width = "0%";
     }
+    console.log("update")
   </script>
 </body>
 
