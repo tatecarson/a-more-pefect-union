@@ -29,9 +29,13 @@ $(function () {
   toggle.on('change', v => {
     if (v) {
       population.population.play();
-
+      console.log(population.population)
       // draw on phones
       draw10p();
+
+      // send melody to hub 
+      client.send('/hub', population.population.melody);
+
     } else {
       // stop loop
       population.population.phrase.stop();

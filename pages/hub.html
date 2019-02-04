@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Start / Stop</title>
+  <script src="/rhizome/rhizome.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+  <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/tone@0.12.80/build/Tone.min.js"></script>
+  <script src='https://cdn.rawgit.com/tambien/StartAudioContext/8da8637e/StartAudioContext.js'></script>
+
+  <script language="javascript" type="text/javascript" src="libraries/NexusUI.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+  <script>
+    let loop;
+    const client = new rhizome.Client();
+    //Rhizome code
+    client.start(function (err) {
+      if (err) throw err;
+      console.log("subscribing...");
+      client.send("/sys/subscribe", ["/"]);
+    });
+
+    client.on("connected", function () {
+      console.log("connected");
+    });
+
+
+
+    $(function () {
+      var delay = new Tone.FeedbackDelay(2, 0.5).toMaster()
+      const reverb = new Tone.JCReverb(0.7).connect(delay)
+
+      const bell = new Tone.Players({
+        bell1: './samples/bell/bell_1a.mp3',
+        bell3: './samples/bell/bell-octave0.mp3',
+        bell4: './samples/bell/bell-octave1.mp3',
+        bell5: './samples/bell/bell-octave2.mp3',
+        bell6: './samples/bell/bellF.mp3'
+      }).connect(reverb);
+
+      //const samplePool = [bell, marimba, kenong, panPot, metal];
+      let melody;
+
+      client.on('message', (addr, args) => {
+        if (addr === '/hub') {
+          melody = args
+          console.log(melody)
+
+          loop.stop().start()
+        }
+      });
+
+      function generatePlayer(player, value) {
+        let randSample = _.sample(Object.keys(player._players));
+        player.get(randSample).start();
+        player.get(randSample).playbackRate = value;
+      };
+
+      loop = new Tone.Loop(function (time) {
+        //triggered every eighth note.
+        generatePlayer(bell, _.sample(melody))
+      }, "4n");
+
+    })
+
+    // theres a weird bug where you can only start it from the players phones
+    function start() {
+      loop.start("+0.1")
+      Tone.Transport.start()
+    }
+
+    function stop() {
+      loop.stop()
+      Tone.Transport.stop()
+    }
+
+    Tone.Transport.start()
+    StartAudioContext(Tone.context, document.documentElement);
+  </script>
+</head>
+
+<body>
+  <button id="start" onclick="start()">Start</button>
+  <button id="start" onclick="stop()">Stop</button>
+</body>
+
+</html>

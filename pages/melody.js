@@ -1,4 +1,4 @@
-function Melody (dna_) {
+function Melody(dna_) {
   const self = this;
   this.dna = dna_;
   this.fitness = 1; // How good is this melody?
@@ -126,6 +126,7 @@ function Melody (dna_) {
   };
 
   this.play = function () {
+    self.melody
     // change tempo depending on genes
     Tone.Transport.bpm.value = self.tempo;
 

@@ -44,6 +44,7 @@
 {"_id":"3q6cxPEANo6g04xO"}
 {"_id":"40SYE4ytTiqvoRI4"}
 {"_id":"468QQtQHF7Jsa88J"}
+{"connectionId":"i30WoXklc0E2U267","namespace":"websockets","data":{"subscriptions":["/"],"infos":{"os":"iPhone","browser":"Mozilla/5.0 (iPhone; CPU iPhone OS 12_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/71.0.3578.89 Mobile/15E148 Safari/605.1"}},"_id":"46EVpQ7Vc6tUPTZr"}
 {"_id":"48Ss8HEm7NkakR0K"}
 {"connectionId":"05lajVt80OCNVQSr","namespace":"websockets","data":{"subscriptions":[],"infos":{"os":"Intel Mac OS X 10.13","browser":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:57.0) Gecko/20100101 Firefox/57.0"}},"_id":"4A4480ice8PcVh9K"}
 {"connectionId":"TcrsOCRILCghklDp","namespace":"websockets","data":{"subscriptions":[],"infos":{"os":"Intel Mac OS X 10.13","browser":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:57.0) Gecko/20100101 Firefox/57.0"}},"_id":"4UCx9ootsF18Kw16"}
@@ -121,6 +122,7 @@
 {"connectionId":"buNMaFOQ9wNP5vVt","namespace":"websockets","data":{"subscriptions":["/"],"infos":{"os":"iPhone","browser":"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.0 Mobile/14G60 Safari/602.1"}},"_id":"BiIi4rG4bXSd3Btb"}
 {"_id":"BlCNvWtlOWT5SLOI"}
 {"connectionId":"mGe5YfIBszbpuZMN","namespace":"websockets","data":{"subscriptions":["/"],"infos":{"os":"iPhone","browser":"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.0 Mobile/14G60 Safari/602.1"}},"_id":"BqupDlqUtIXG9xzm"}
+{"connectionId":"DnDKogjWxe2tBjQd","namespace":"websockets","data":{"subscriptions":["/"],"infos":{"os":"MacIntel","browser":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.81 Safari/537.36"}},"_id":"C4BDAvbQFCZsbVBM"}
 {"_id":"C7cv4Bu5wi9UizBr"}
 {"connectionId":"qpcD8ixtmz68mZYt","namespace":"websockets","data":{"subscriptions":["/bleep"],"infos":{"os":"iPhone","browser":"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.0 Mobile/14G60 Safari/602.1"}},"_id":"C8RDORVNyLbr5KPY"}
 {"_id":"CB2xosY47KIIRVZg"}
@@ -141,6 +143,7 @@
 {"connectionId":"5iHNN6uXrXl7Kv3F","namespace":"websockets","data":{"subscriptions":["/"],"infos":{"os":"Intel Mac OS X 10.12","browser":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0"}},"_id":"DYiGpHK5QbLGEXor"}
 {"connectionId":"rofvxgKVOisJP49o","namespace":"websockets","data":{"subscriptions":["/bleep"],"infos":{"os":"iPhone","browser":"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.0 Mobile/14G60 Safari/602.1"}},"_id":"DcPBGmiZqK48W2ku"}
 {"connectionId":"FHTnwngGHMtn0avM","namespace":"websockets","data":{"subscriptions":[],"infos":{"os":"MacIntel","browser":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"}},"_id":"DlsEI60Atu74bNiN"}
+{"_id":"DnDKogjWxe2tBjQd"}
 {"_id":"DpwWmoQl63hLCz0B"}
 {"_id":"Dr9nrJM1HoFkRNq7"}
 {"_id":"DtANuS1m58xO6TRX"}
@@ -275,6 +278,7 @@
 {"connectionId":"OWrxtr6VBw65890u","namespace":"websockets","data":{"subscriptions":["/"],"infos":{"os":"iPhone","browser":"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.0 Mobile/14G60 Safari/602.1"}},"_id":"NjFqa9CsPyJFwifL"}
 {"connectionId":"P08byOj6UmNEZS7E","namespace":"websockets","data":{"subscriptions":["/"],"infos":{"os":"MacIntel","browser":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"}},"_id":"NsYLiUwGfjSodIin"}
 {"_id":"NxogBOiBfCyFZrJ6"}
+{"_id":"NyxhiM6faK3GRKGG"}
 {"_id":"O0YFe3EQh5RbF5qs"}
 {"_id":"OWrxtr6VBw65890u"}
 {"connectionId":"3UYR31fLpWDN7onJ","namespace":"websockets","data":{"subscriptions":[],"infos":{"os":"MacIntel","browser":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"}},"_id":"OZxJJZMyxIAI68lW"}
@@ -489,11 +493,13 @@
 {"_id":"hemhIuszeruenwzX"}
 {"connectionId":"fZ280m9OcM2qkf8m","namespace":"websockets","data":{"subscriptions":[],"infos":{"os":"MacIntel","browser":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"}},"_id":"hqMcnEA2SRxYKo8L"}
 {"_id":"hui3hlSZ0vQwr9mc"}
+{"_id":"i30WoXklc0E2U267"}
 {"connectionId":"75Wb72hS3iMUieQ6","namespace":"websockets","data":{"subscriptions":[],"infos":{"os":"Intel Mac OS X 10.12","browser":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:57.0) Gecko/20100101 Firefox/57.0"}},"_id":"iBGKhOojvL8fwYcf"}
 {"_id":"iCz6kmfIObYzrkEr"}
 {"_id":"iIS9pET9F5otbSES"}
 {"connectionId":"xKGws3hDtu6SuwHj","namespace":"websockets","data":{"subscriptions":[],"infos":{"os":"MacIntel","browser":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"}},"_id":"ikL832muHG5h5OHO"}
 {"_id":"inUmZllAoO2UvBwm"}
+{"connectionId":"NyxhiM6faK3GRKGG","namespace":"websockets","data":{"subscriptions":["/"],"infos":{"os":"iPhone","browser":"Mozilla/5.0 (iPhone; CPU iPhone OS 11_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.0 Mobile/15E148 Safari/604.1"}},"_id":"io7AO9BQ9J35ImQE"}
 {"_id":"it7OMPeCD20So26n"}
 {"_id":"izPJkrHxHHF7198g"}
 {"_id":"j0lNHfIIYlQ01kai"}
@@ -682,6 +688,3 @@
 {"_id":"zlBhrP6dad6xmRvL"}
 {"_id":"zrdcdTrChsdPhXah"}
 {"_id":"zrefwdo5dmHq7Cys"}
-{"_id":"NyxhiM6faK3GRKGG"}
-{"connectionId":"NyxhiM6faK3GRKGG","namespace":"websockets","data":{"subscriptions":[],"infos":{"os":"iPhone","browser":"Mozilla/5.0 (iPhone; CPU iPhone OS 11_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.0 Mobile/15E148 Safari/604.1"}},"_id":"io7AO9BQ9J35ImQE"}
-{"connectionId":"NyxhiM6faK3GRKGG","namespace":"websockets","data":{"subscriptions":["/"],"infos":{"os":"iPhone","browser":"Mozilla/5.0 (iPhone; CPU iPhone OS 11_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.0 Mobile/15E148 Safari/604.1"}},"_id":"io7AO9BQ9J35ImQE"}
