@@ -34,7 +34,8 @@ $(function () {
       draw10p();
 
       // send melody to hub 
-      client.send('/hub', population.population.melody);
+      client.send('/hubMelody', population.population.melody);
+
 
     } else {
       // stop loop
@@ -52,6 +53,9 @@ $(function () {
       population.reproduction();
       population.population.clearFitness();
       population.newPop(20); // if over a certain number clear
+
+      console.log(Tone.Transport.bpm.value)
+      client.send('/hubTempo', [Tone.Transport.bpm.value])
     }
   });
 });

@@ -688,3 +688,6 @@
 {"_id":"zlBhrP6dad6xmRvL"}
 {"_id":"zrdcdTrChsdPhXah"}
 {"_id":"zrefwdo5dmHq7Cys"}
+{"_id":"MuRyNRAdqU7aU00V"}
+{"connectionId":"MuRyNRAdqU7aU00V","namespace":"websockets","data":{"subscriptions":[],"infos":{"os":"iPhone","browser":"Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/1.7.3b19.01.25.15 Mobile/16C101 Safari/605.1.15"}},"_id":"rlk5l6o1xa40poKo"}
+{"connectionId":"MuRyNRAdqU7aU00V","namespace":"websockets","data":{"subscriptions":["/"],"infos":{"os":"iPhone","browser":"Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/1.7.3b19.01.25.15 Mobile/16C101 Safari/605.1.15"}},"_id":"rlk5l6o1xa40poKo"}

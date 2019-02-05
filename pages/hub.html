@@ -46,11 +46,16 @@
       let melody;
 
       client.on('message', (addr, args) => {
-        if (addr === '/hub') {
+        if (addr === '/hubMelody') {
           melody = args
-          console.log(melody)
 
-          loop.stop().start()
+          loop.stop().start("+1")
+        }
+      });
+      client.on('message', (addr, args) => {
+        if (addr === '/hubTempo') {
+          console.log(args[0])
+          Tone.Transport.bpm.rampTo(args[0], 10);
         }
       });
 
