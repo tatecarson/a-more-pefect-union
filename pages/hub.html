@@ -8,10 +8,10 @@
   <title>Start / Stop</title>
   <script src="/rhizome/rhizome.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+  <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/nexusui@2.0.9/dist/NexusUI.min.js"></script>
   <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/tone@0.12.80/build/Tone.min.js"></script>
   <script src='https://cdn.rawgit.com/tambien/StartAudioContext/8da8637e/StartAudioContext.js'></script>
 
-  <script language="javascript" type="text/javascript" src="libraries/NexusUI.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
   <script>
@@ -31,6 +31,18 @@
 
 
     $(function () {
+      // UI for hub
+      var dial = Nexus.Add.Slider('dial', {
+        max: 0,
+        min: -60,
+        value: -20
+      })
+      var number = Nexus.Add.Number('number')
+
+      number.link(dial)
+
+      dial.on("change", v => client.send('/hubVolume', [v]))
+
       var delay = new Tone.FeedbackDelay(2, 0.5).toMaster()
       const reverb = new Tone.JCReverb(0.7).connect(delay)
 
@@ -49,13 +61,36 @@
         if (addr === '/hubMelody') {
           melody = args
 
-          loop.stop().start("+1")
+          //loop.stop().start("+1")
         }
       });
       client.on('message', (addr, args) => {
         if (addr === '/hubTempo') {
           console.log(args[0])
           Tone.Transport.bpm.rampTo(args[0], 10);
+        }
+      });
+
+      client.on('message', (addr, args) => {
+        if (addr === '/hubStart') {
+
+          Tone.Transport.start()
+          loop.stop().start("+1")
+        }
+      });
+      client.on('message', (addr, args) => {
+        if (addr === '/hubVolume') {
+          console.log(args)
+          Tone.Master.volume.value = args[0]
+        }
+      });
+
+
+      client.on('message', (addr, args) => {
+        if (addr === '/hubStop') {
+
+          Tone.Transport.stop()
+          loop.stop();
         }
       });
 
@@ -66,23 +101,26 @@
       };
 
       loop = new Tone.Loop(function (time) {
+        if (typeof melody === "undefined") {
+          melody = [1, 1, 1, 1]
+        }
         //triggered every eighth note.
         generatePlayer(bell, _.sample(melody))
       }, "4n");
+
 
     })
 
     // theres a weird bug where you can only start it from the players phones
     function start() {
-      loop.start("+0.1")
-      Tone.Transport.start()
+      client.send('/hubStart', [1])
     }
 
     function stop() {
-      loop.stop()
-      Tone.Transport.stop()
+      client.send('/hubStop', [1])
     }
 
+    Tone.Master.volume.value = -22
     Tone.Transport.start()
     StartAudioContext(Tone.context, document.documentElement);
   </script>
@@ -91,6 +129,10 @@
 <body>
   <button id="start" onclick="start()">Start</button>
   <button id="start" onclick="stop()">Stop</button>
+  <br><br><br>
+  <span id="dial"></span>
+  <br>
+  <span id="number"></span>
 </body>
 
 </html>
